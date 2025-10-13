@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
-    <PackageReference Include="NetDaemon.HassModel" Version="25.18.1" />
+    <PackageReference Include="NetDaemon.HassModel" Version="25.36.0" />
   </ItemGroup>
 
 </Project>
