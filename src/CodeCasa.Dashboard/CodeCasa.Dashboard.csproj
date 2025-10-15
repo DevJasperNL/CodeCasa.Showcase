@@ -11,7 +11,7 @@
     <PackageReference Include="CodeCasa.NetDaemon.Notifications.InputSelect" Version="1.4.1" />
     <PackageReference Include="CodeCasa.NetDaemon.RuntimeState" Version="1.4.1" />
     <PackageReference Include="MudBlazor" Version="8.11.0" />
-    <PackageReference Include="NetDaemon.Runtime" Version="25.18.1" />
+    <PackageReference Include="NetDaemon.Runtime" Version="25.36.0" />
     <PackageReference Include="Occurify.Reactive" Version="0.9.0" />
     <PackageReference Include="Occurify.TimeZones" Version="0.9.0" />
   </ItemGroup>

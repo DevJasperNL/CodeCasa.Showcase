@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="CodeCasa.NetDaemon.TypedEntities" Version="1.4.1" />
-    <PackageReference Include="NetDaemon.Runtime" Version="25.18.1" />
+    <PackageReference Include="NetDaemon.Runtime" Version="25.36.0" />
   </ItemGroup>
 
   <ItemGroup>
