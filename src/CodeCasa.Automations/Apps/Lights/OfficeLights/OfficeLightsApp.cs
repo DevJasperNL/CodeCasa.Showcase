@@ -4,12 +4,12 @@ using CodeCasa.CustomEntities.Automation.People;
 using CodeCasa.CustomEntities.Automation.Sensors;
 using CodeCasa.CustomEntities.Automation.Switches;
 using CodeCasa.Lights;
-using CodeCasa.Notifications.Light;
 using Microsoft.Extensions.DependencyInjection;
 using NetDaemon.AppModel;
 using System.Drawing;
 using System.Reactive.Concurrency;
 using CodeCasa.AutomationPipelines.Lights.NetDaemon.Extensions;
+using CodeCasa.Notifications.Lights;
 
 namespace CodeCasa.Automations.Apps.Lights.OfficeLights;
 

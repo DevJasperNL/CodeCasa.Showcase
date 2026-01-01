@@ -11,7 +11,7 @@ namespace CodeCasa.Automations.Apps.Lights.OfficeLights
         {
             scheduler.SchedulePeriodic(
                 TimeSpan.FromSeconds(2),
-                () => Console.WriteLine($"Tick at {DateTime.Now} for {context.LightEntity.Id}")
+                () => Console.WriteLine($"Tick at {DateTime.Now} for {context.Light.Id}")
             );
         }
     }

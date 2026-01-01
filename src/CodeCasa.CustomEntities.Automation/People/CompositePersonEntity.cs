@@ -4,9 +4,6 @@ using CodeCasa.CustomEntities.Core.InputSelect;
 using CodeCasa.NetDaemon.Extensions.Observables;
 using CodeCasa.Notifications.InputSelect.NetDaemon.Interact;
 using CodeCasa.Notifications.Phone.NetDaemon;
-using System.Reactive.Linq;
-using NetDaemon.HassModel.Entities;
-using CodeCasa.CustomEntities.Core.InputSelect;
 
 
 namespace CodeCasa.CustomEntities.Automation.People;

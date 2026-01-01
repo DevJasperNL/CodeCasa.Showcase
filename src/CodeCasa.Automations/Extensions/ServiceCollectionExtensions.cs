@@ -3,9 +3,9 @@ using CodeCasa.AutomationPipelines.Extensions;
 using CodeCasa.AutomationPipelines.Lights.Extensions;
 using CodeCasa.Automations.Apps.Lights.BackyardLights.Observables;
 using CodeCasa.CustomEntities.Automation.Extensions;
+using CodeCasa.Notifications.InputSelect.NetDaemon.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NetDaemon.Notifications.InputSelect.Extensions;
 using Occurify.Astro;
 
 namespace CodeCasa.Automations.Extensions;

@@ -4,7 +4,7 @@ using CodeCasa.CustomEntities.Automation.People;
 using CodeCasa.CustomEntities.Automation.Sensors;
 using CodeCasa.CustomEntities.Automation.Switches;
 using CodeCasa.CustomEntities.Core.Extensions;
-using CodeCasa.Notifications.Light.Extensions;
+using CodeCasa.Notifications.Lights.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CodeCasa.CustomEntities.Automation.Extensions;

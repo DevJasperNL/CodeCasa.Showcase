@@ -3,8 +3,8 @@ using CodeCasa.AutomationPipelines.Lights.NetDaemon.Extensions;
 using CodeCasa.AutomationPipelines.Lights.Pipeline;
 using CodeCasa.Automations.Apps.Lights.BackyardLights.Observables;
 using CodeCasa.Lights;
-using CodeCasa.Notifications.Light;
-using CodeCasa.Notifications.Light.Extensions;
+using CodeCasa.Notifications.Lights;
+using CodeCasa.Notifications.Lights.Extensions;
 using NetDaemon.AppModel;
 
 namespace CodeCasa.Automations.Apps.Lights.BackyardLights;
@@ -57,7 +57,7 @@ internal class BackyardLightsApp
                     builder
                         .When(backyardLightsRoutineFactory.Create(offsetSeconds), LightParameters.Relax)
                         .TurnOffWhen<BackyardLightsEnergySaving>()
-                        .SupportNotifications(lightNotificationManager);
+                        .AddNotifications(lightNotificationManager);
                 });
         }
     }

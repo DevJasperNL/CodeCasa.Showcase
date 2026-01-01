@@ -1,6 +1,6 @@
 ﻿using System.Reactive.Concurrency;
 using CodeCasa.Automations.Nodes;
-using CodeCasa.Notifications.Light;
+using CodeCasa.Notifications.Lights;
 using NetDaemon.AppModel;
 
 namespace CodeCasa.Automations.Apps.Notifications;
