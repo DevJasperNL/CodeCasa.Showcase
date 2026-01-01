@@ -1,4 +1,6 @@
-﻿namespace CodeCasa.CustomEntities.Core.InputSelect;
+﻿using NetDaemon.HassModel.Entities;
+
+namespace CodeCasa.CustomEntities.Core.InputSelect;
 
 public static class TypeSafeInputSelectEntityExtensionMethods
 {

@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using CodeCasa.CustomEntities.Core.Notifications;
-using NetDaemon.Notifications.InputSelect.Config;
+using CodeCasa.Notifications.InputSelect.NetDaemon.Config;
 
 namespace CodeCasa.CustomEntities.Automation.Notifications.Dashboards
 {
