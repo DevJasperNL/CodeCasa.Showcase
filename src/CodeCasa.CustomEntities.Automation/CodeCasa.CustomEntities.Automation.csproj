@@ -1,16 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CodeCasa.NetDaemon.Extensions.Observables" Version="1.4.1" />
-    <PackageReference Include="CodeCasa.NetDaemon.Notifications.InputSelect" Version="1.4.1" />
-    <PackageReference Include="CodeCasa.NetDaemon.Notifications.Phone" Version="1.4.1" />
-    <PackageReference Include="NetDaemon.HassModel" Version="25.18.1" />
+    <PackageReference Include="CodeCasa.NetDaemon.Extensions.Observables" Version="1.8.0" />
+    <PackageReference Include="CodeCasa.Notifications.InputSelect.NetDaemon" Version="1.8.0" />
+    <PackageReference Include="CodeCasa.Notifications.Phone.NetDaemon" Version="1.8.0" />
+    <PackageReference Include="NetDaemon.HassModel" Version="25.48.0" />
   </ItemGroup>
 
   <ItemGroup>

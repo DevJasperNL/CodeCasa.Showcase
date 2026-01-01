@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
@@ -24,17 +24,17 @@
 
   <ItemGroup>
     <PackageReference Include="AutomationPipelines" Version="0.3.1" />
-    <PackageReference Include="CodeCasa.NetDaemon.Extensions.Observables" Version="1.4.1" />
-    <PackageReference Include="CodeCasa.NetDaemon.Notifications.InputSelect" Version="1.4.1" />
-    <PackageReference Include="CodeCasa.NetDaemon.Notifications.Phone" Version="1.4.1" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.8" />
+    <PackageReference Include="CodeCasa.NetDaemon.Extensions.Observables" Version="1.8.0" />
+    <PackageReference Include="CodeCasa.Notifications.InputSelect.NetDaemon" Version="1.8.0" />
+    <PackageReference Include="CodeCasa.Notifications.Phone.NetDaemon" Version="1.8.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
-    <PackageReference Include="NetDaemon.Extensions.Scheduling" Version="25.18.1" />
-    <PackageReference Include="NetDaemon.Runtime" Version="25.18.1" />
-    <PackageReference Include="Occurify.Astro" Version="0.9.0" />
-    <PackageReference Include="Occurify.Reactive" Version="0.9.0" />
-    <PackageReference Include="Occurify.TimeZones" Version="0.9.0" />
-    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageReference Include="NetDaemon.Extensions.Scheduling" Version="25.48.0" />
+    <PackageReference Include="NetDaemon.Runtime" Version="25.48.0" />
+    <PackageReference Include="Occurify.Astro" Version="0.10.0" />
+    <PackageReference Include="Occurify.Reactive" Version="0.10.0" />
+    <PackageReference Include="Occurify.TimeZones" Version="0.10.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
   </ItemGroup>
 
   <ItemGroup>
