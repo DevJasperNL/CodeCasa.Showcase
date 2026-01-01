@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Reactive.Concurrency;
 using CodeCasa.AutomationPipelines.Lights.NetDaemon.Extensions;
 using CodeCasa.Notifications.Lights;
+using CodeCasa.Notifications.Lights.Extensions;
 
 namespace CodeCasa.Automations.Apps.Lights.OfficeLights;
 
@@ -49,17 +50,20 @@ internal class OfficeLightsApp
                                         c2.Add(context => new ColorTransitionNode(
                                             context.ServiceProvider.GetRequiredService<IScheduler>(),
                                             TimeSpan.FromSeconds(3),
-                                            Color.Cyan, Color.Yellow, Color.Magenta));
+                                            Color.LawnGreen, Color.Red, Color.Blue));
+                                    })
+                                    .ForLight(lightEntities.OfficeLightColor3.EntityId, c2 =>
+                                    {
+                                        c2.Add(context => new ColorTransitionNode(
+                                            context.ServiceProvider.GetRequiredService<IScheduler>(),
+                                            TimeSpan.FromSeconds(3),
+                                            Color.Blue, Color.LawnGreen, Color.Red));
                                     });
-                            });
-                            //.AddToggle(officeDimmerSwitch.ScenePressed, c => c.Add<TestNode>())
-                            //.AddToggle(officeDimmerSwitch.ScenePressed, c => c.Add(ctx => new TestNode(ctx, ctx.ServiceProvider.GetRequiredService<IScheduler>())))
-                            //.AddToggle(officeDimmerSwitch.OnOffPressed, c => c.Add<TestNode>())
-                        //.TurnOffWhen(people.OnLastPersonToAsleepOrAwayObservable().Where(b => b)
-                        //    .Select(_ => Unit.Default));
-                    });
-                //.AddNode<AlarmNode>();
-                //.SupportNotifications(lightNotificationManager);
+                            })
+                            .TurnOffWhen(people.OnLastPersonToAsleepOrAwayObservable())
+                            .AddReactiveDimmer(officeDimmerSwitch);
+                    })
+                    .AddNotifications(lightNotificationManager);
             });
     }
 }

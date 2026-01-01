@@ -35,7 +35,8 @@ internal class BackyardLightsApp
                 {
                     b
                         .TurnOnWhen(backyardLightsRoutineFactory.Create(TimeSpan.FromSeconds(index)))
-                        .TurnOffWhen<BackyardLightsEnergySaving>();
+                        .TurnOffWhen<BackyardLightsEnergySaving>()
+                        .AddNotifications(lightNotificationManager);
                 });
         }
 
@@ -55,7 +56,7 @@ internal class BackyardLightsApp
                 .SetupLightPipeline(light, builder =>
                 {
                     builder
-                        .When(backyardLightsRoutineFactory.Create(offsetSeconds), LightParameters.Relax)
+                        .When(backyardLightsRoutineFactory.Create(offsetSeconds), LightParameters.Relax.AsTransitionInSeconds(transitionSeconds))
                         .TurnOffWhen<BackyardLightsEnergySaving>()
                         .AddNotifications(lightNotificationManager);
                 });

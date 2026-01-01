@@ -1,7 +1,7 @@
 ﻿using System.Reactive;
 using System.Reactive.Linq;
+using CodeCasa.Abstractions;
 using CodeCasa.CustomEntities.Core.Extensions;
-using NetDaemon.Devices.Abstractions;
 using NetDaemon.HassModel;
 
 namespace CodeCasa.CustomEntities.Core.Switches
