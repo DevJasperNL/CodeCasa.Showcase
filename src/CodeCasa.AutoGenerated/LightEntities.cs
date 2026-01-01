@@ -12,6 +12,12 @@ public partial class LightEntities
 
     /// <summary>Enumerates all light entities currently registered (at runtime) in Home Assistant as LightEntity</summary>
     public IEnumerable<LightEntity> EnumerateAll() => _haContext.GetAllEntities().Where(e => e.EntityId.StartsWith("light.")).Select(e => new LightEntity(e));
+    ///<summary>Office Light Color 1</summary>
+    public LightEntity OfficeLightColor1 => new(_haContext, "light.office_light_color_1");
+    ///<summary>Office Light Color 2</summary>
+    public LightEntity OfficeLightColor2 => new(_haContext, "light.office_light_color_2");
+    ///<summary>Office Light Color 3</summary>
+    public LightEntity OfficeLightColor3 => new(_haContext, "light.office_light_color_3");
     ///<summary>Office Lights</summary>
     public LightEntity OfficeLights => new(_haContext, "light.office_lights");
     ///<summary>Backyard Door Light</summary>

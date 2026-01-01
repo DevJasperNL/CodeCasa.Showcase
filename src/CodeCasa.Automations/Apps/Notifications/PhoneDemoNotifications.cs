@@ -1,10 +1,10 @@
 ﻿using NetDaemon.AppModel;
 using NetDaemon.HassModel;
+using NetDaemon.Notifications.Phone.Config;
 using System.Drawing;
 using CodeCasa.CustomEntities.Automation.Notifications.Phones;
 using CodeCasa.CustomEntities.Core.Events;
 using CodeCasa.NetDaemon.Utilities.Extensions;
-using CodeCasa.Notifications.Phone.NetDaemon.Config;
 
 namespace CodeCasa.Automations.Apps.Notifications;
 

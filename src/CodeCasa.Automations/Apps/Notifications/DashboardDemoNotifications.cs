@@ -1,9 +1,9 @@
 ﻿using CodeCasa.CustomEntities.Automation.Notifications.Dashboards;
 using CodeCasa.CustomEntities.Core.Events;
 using CodeCasa.NetDaemon.Utilities.Extensions;
-using CodeCasa.Notifications.InputSelect.NetDaemon;
 using NetDaemon.AppModel;
 using NetDaemon.HassModel;
+using NetDaemon.Notifications.InputSelect;
 
 namespace CodeCasa.Automations.Apps.Notifications;
 

@@ -7,11 +7,11 @@ public partial record LightAttributes
     [JsonPropertyName("supported_color_modes")]
     public IReadOnlyList<string>? SupportedColorModes { get; init; }
 
-    [JsonPropertyName("friendly_name")]
-    public string? FriendlyName { get; init; }
-
     [JsonPropertyName("supported_features")]
     public double? SupportedFeatures { get; init; }
+
+    [JsonPropertyName("color_mode")]
+    public string? ColorMode { get; init; }
 
     [JsonPropertyName("min_color_temp_kelvin")]
     public double? MinColorTempKelvin { get; init; }
@@ -25,39 +25,39 @@ public partial record LightAttributes
     [JsonPropertyName("max_mireds")]
     public double? MaxMireds { get; init; }
 
-    [JsonPropertyName("effect_list")]
-    public IReadOnlyList<string>? EffectList { get; init; }
-
-    [JsonPropertyName("color_mode")]
-    public string? ColorMode { get; init; }
-
     [JsonPropertyName("brightness")]
-    public object? Brightness { get; init; }
+    public double? Brightness { get; init; }
 
     [JsonPropertyName("color_temp_kelvin")]
-    public object? ColorTempKelvin { get; init; }
+    public double? ColorTempKelvin { get; init; }
 
     [JsonPropertyName("color_temp")]
-    public object? ColorTemp { get; init; }
+    public double? ColorTemp { get; init; }
 
     [JsonPropertyName("hs_color")]
-    public object? HsColor { get; init; }
+    public IReadOnlyList<double>? HsColor { get; init; }
 
     [JsonPropertyName("rgb_color")]
-    public object? RgbColor { get; init; }
+    public IReadOnlyList<double>? RgbColor { get; init; }
 
     [JsonPropertyName("xy_color")]
-    public object? XyColor { get; init; }
+    public IReadOnlyList<double>? XyColor { get; init; }
 
     [JsonPropertyName("entity_id")]
     public IReadOnlyList<string>? EntityId { get; init; }
 
-    [JsonPropertyName("icon")]
-    public string? Icon { get; init; }
+    [JsonPropertyName("effect_list")]
+    public IReadOnlyList<string>? EffectList { get; init; }
 
-    [JsonPropertyName("restored")]
-    public bool? Restored { get; init; }
+    [JsonPropertyName("color")]
+    public object? Color { get; init; }
 
     [JsonPropertyName("effect")]
     public object? Effect { get; init; }
+
+    [JsonPropertyName("icon")]
+    public string? Icon { get; init; }
+
+    [JsonPropertyName("friendly_name")]
+    public string? FriendlyName { get; init; }
 }
