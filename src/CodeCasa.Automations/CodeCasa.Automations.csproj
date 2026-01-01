@@ -25,8 +25,8 @@
   <ItemGroup>
     <PackageReference Include="AutomationPipelines" Version="0.3.1" />
     <PackageReference Include="CodeCasa.NetDaemon.Extensions.Observables" Version="1.8.0" />
-    <PackageReference Include="CodeCasa.NetDaemon.Notifications.InputSelect" Version="1.7.0" />
-    <PackageReference Include="CodeCasa.NetDaemon.Notifications.Phone" Version="1.7.0" />
+    <PackageReference Include="CodeCasa.Notifications.InputSelect.NetDaemon" Version="1.8.0" />
+    <PackageReference Include="CodeCasa.Notifications.Phone.NetDaemon" Version="1.8.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
     <PackageReference Include="NetDaemon.Extensions.Scheduling" Version="25.48.0" />
