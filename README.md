@@ -6,7 +6,7 @@ A smart home implementation example using C# and NetDaemon.
 
 This repository explores creative and powerful ways to use a rich programming language like C# for home automation. From custom logic to seamless integrations, you'll find practical examples and unique ideas to elevate your smart home setup. Stay tuned for ongoing updates and new features!
 
-## 📖 Table of Contents  
+## 📖 Table of Contents
 - [Architectures & Implementations](#🛠️-architectures--implementations)
     - [Blazor Frontend (NSPanel Pro)](#blazor-frontend-nspanel-pro)
     - [People](#people)
@@ -14,6 +14,9 @@ This repository explores creative and powerful ways to use a rich programming la
     - [Input Select Notifications](#input-select-notifications)
     - [Automation Pipelines](#automation-pipelines)
 - [Projects Overview](#🔧-projects-overview)
+- [Local Debugging with CodeCasa Projects](#local-debugging-with-codecasa-projects)
+    - [CodeCasa.Showcase.withLocalCodeCasa.sln](#codecasashowcasewithlocalcodecasasln)
+    - [Requirements](#requirements)
 
 ## 🛠️ Architectures & Implementations
 
@@ -146,3 +149,17 @@ These projects combine existing entities into compound entities or creates entir
 ### 🛠️ NetDaemon Utilities (`CodeCasa.NetDaemon.Utilities`)
 
 A collection of utility classes for working with NetDaemon entities. These utilities are tailored to the use-cases of this project but may be useful for similar implementations in other projects.
+
+## Local Debugging with CodeCasa Projects
+
+This repository can optionally use **local versions of the CodeCasa libraries** for debugging instead of the NuGet packages.
+
+### `CodeCasa.Showcase.withLocalCodeCasa.sln`
+
+- A local solution file that **includes all showcase projects and any local CodeCasa projects**.
+- Opening this solution **automatically activates the project reference replacement**, so NuGet packages are replaced with local projects.
+- Breakpoints in CodeCasa projects work normally, and projects appear in Solution Explorer.
+
+### Requirements
+
+- You must **checkout the [CodeCasa repository](https://github.com/DevJasperNL/CodeCasa)** as a sibling of this repo (same parent directory as this repo).
