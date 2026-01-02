@@ -1,4 +1,8 @@
 <Project>
+  <PropertyGroup>
+    <UseLocalLibs Condition="'$(SolutionFileName)' == 'CodeCasa.Showcase.withLocalCodeCasa.sln'">true</UseLocalLibs>
+  </PropertyGroup>
+  
   <ItemGroup Condition="'$(UseLocalLibs)' == 'true'">
     <ProjectReference Include="..\..\..\CodeCasa\src\CodeCasa.Abstractions\CodeCasa.Abstractions.csproj" />
     <ProjectReference Include="..\..\..\CodeCasa\src\CodeCasa.AutomationPipelines\CodeCasa.AutomationPipelines.csproj" />
