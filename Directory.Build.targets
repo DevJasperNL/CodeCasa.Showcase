@@ -1,0 +1,31 @@
+<Project>
+  <ItemGroup Condition="'$(UseLocalLibs)' == 'true'">
+    <ProjectReference Include="..\..\..\CodeCasa\src\CodeCasa.Abstractions\CodeCasa.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\CodeCasa\src\CodeCasa.AutomationPipelines\CodeCasa.AutomationPipelines.csproj" />
+    <ProjectReference Include="..\..\..\CodeCasa\src\CodeCasa.AutomationPipelines.Lights\CodeCasa.AutomationPipelines.Lights.csproj" />
+    <ProjectReference Include="..\..\..\CodeCasa\src\CodeCasa.AutomationPipelines.Lights.NetDaemon\CodeCasa.AutomationPipelines.Lights.NetDaemon.csproj" />
+    <ProjectReference Include="..\..\..\CodeCasa\src\CodeCasa.Lights\CodeCasa.Lights.csproj" />
+    <ProjectReference Include="..\..\..\CodeCasa\src\CodeCasa.Lights.NetDaemon\CodeCasa.Lights.NetDaemon.csproj" />
+    <ProjectReference Include="..\..\..\CodeCasa\src\CodeCasa.Lights.NetDaemon.Scenes\CodeCasa.Lights.NetDaemon.Scenes.csproj" />
+    <ProjectReference Include="..\..\..\CodeCasa\src\CodeCasa.NetDaemon.Extensions.Observables\CodeCasa.NetDaemon.Extensions.Observables.csproj" />
+    <ProjectReference Include="..\..\..\CodeCasa\src\CodeCasa.NetDaemon.RuntimeState\CodeCasa.NetDaemon.RuntimeState.csproj" />
+    <ProjectReference Include="..\..\..\CodeCasa\src\CodeCasa.NetDaemon.TypedEntities\CodeCasa.NetDaemon.TypedEntities.csproj" />
+    <ProjectReference Include="..\..\..\CodeCasa\src\CodeCasa.Notifications.InputSelect.NetDaemon\CodeCasa.Notifications.InputSelect.NetDaemon.csproj" />
+    <ProjectReference Include="..\..\..\CodeCasa\src\CodeCasa.Notifications.Lights\CodeCasa.Notifications.Lights.csproj" />
+    <ProjectReference Include="..\..\..\CodeCasa\src\CodeCasa.Notifications.Phone.NetDaemon\CodeCasa.Notifications.Phone.NetDaemon.csproj" />
+
+    <PackageReference Remove="CodeCasa.Abstractions" />
+    <PackageReference Remove="CodeCasa.AutomationPipelines" />
+    <PackageReference Remove="CodeCasa.AutomationPipelines.Lights" />
+    <PackageReference Remove="CodeCasa.AutomationPipelines.Lights.NetDaemon" />
+    <PackageReference Remove="CodeCasa.Lights" />
+    <PackageReference Remove="CodeCasa.Lights.NetDaemon" />
+    <PackageReference Remove="CodeCasa.Lights.NetDaemon.Scenes" />
+    <PackageReference Remove="CodeCasa.NetDaemon.Extensions.Observables" />
+    <PackageReference Remove="CodeCasa.NetDaemon.RuntimeState" />
+    <PackageReference Remove="CodeCasa.NetDaemon.TypedEntities" />
+    <PackageReference Remove="CodeCasa.Notifications.InputSelect.NetDaemon" />
+    <PackageReference Remove="CodeCasa.Notifications.Lights" />
+    <PackageReference Remove="CodeCasa.Notifications.Phone.NetDaemon" />
+  </ItemGroup>
+</Project>
