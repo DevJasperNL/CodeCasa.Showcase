@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="CodeCasa.NetDaemon.Extensions.Observables" Version="1.8.0" />
-    <PackageReference Include="CodeCasa.Notifications.InputSelect.NetDaemon" Version="1.8.0" />
+    <PackageReference Include="CodeCasa.Notifications.InputSelect.NetDaemon" Version="1.8.1" />
     <PackageReference Include="CodeCasa.Notifications.Phone.NetDaemon" Version="1.8.0" />
     <PackageReference Include="NetDaemon.HassModel" Version="25.48.0" />
   </ItemGroup>
