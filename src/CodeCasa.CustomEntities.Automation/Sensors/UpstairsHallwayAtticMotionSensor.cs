@@ -4,10 +4,10 @@ using CodeCasa.NetDaemon.Sensors.Composite;
 
 namespace CodeCasa.CustomEntities.Automation.Sensors
 {
-    public class OfficeMotionSensor(
+    public class UpstairsHallwayAtticMotionSensor(
         IScheduler scheduler,
         BinarySensorEntities binarySensorEntities,
         SensorEntities sensorEntities)
-        : MotionSensor(scheduler, binarySensorEntities.OfficeMotionSensorOccupancy,
-            sensorEntities.OfficeMotionSensorIlluminance);
+        : MotionSensor(scheduler, binarySensorEntities.UpstairsHallwayAtticMotionSensorOccupancy,
+            sensorEntities.UpstairsHallwayAtticMotionSensorIlluminance);
 }

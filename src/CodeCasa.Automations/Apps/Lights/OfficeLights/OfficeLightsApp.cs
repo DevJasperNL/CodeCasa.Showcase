@@ -3,12 +3,12 @@ using CodeCasa.AutomationPipelines.Lights.Pipeline;
 using CodeCasa.CustomEntities.Automation.People;
 using CodeCasa.CustomEntities.Automation.Sensors;
 using CodeCasa.CustomEntities.Automation.Switches;
-using CodeCasa.Lights;
 using Microsoft.Extensions.DependencyInjection;
 using NetDaemon.AppModel;
 using System.Drawing;
 using System.Reactive.Concurrency;
 using CodeCasa.AutomationPipelines.Lights.NetDaemon.Extensions;
+using CodeCasa.CustomEntities.Automation.Extensions;
 using CodeCasa.Notifications.Lights;
 using CodeCasa.Notifications.Lights.Extensions;
 
@@ -22,10 +22,17 @@ internal class OfficeLightsApp
         LightEntities lightEntities,
         LightNotificationManagerContext lightNotificationManager,
         OfficeMotionSensor officeMotionSensor,
-        OfficeWallModuleSingleRocker officeWallModuleSingleRocker,
+        OfficeWallSwitch officeWallSwitch,
         OfficeDimmerSwitch officeDimmerSwitch,
         PeopleEntities people)
     {
+        people.OnLastPersonToAsleepOrAwayObservable().Subscribe(_ =>
+        {
+            int i = 0;
+            i++;
+        });
+
+
         lightPipelineFactory
             .SetupLightPipeline(lightEntities.OfficeLights, builder =>
             {
@@ -37,30 +44,31 @@ internal class OfficeLightsApp
                             .AddToggle(officeDimmerSwitch.OnOffPressed, c =>
                             {
                                 c
-                                    .Add(LightParameters.Relax)
+                                    //.Add(LightParameters.Relax)
+                                    .Add<TestNode>()
                                     .ForLight(lightEntities.OfficeLightColor1.EntityId, c1 =>
                                     {
-                                        c1.Add(context => new ColorTransitionNode(
-                                            context.ServiceProvider.GetRequiredService<IScheduler>(),
+                                        c1.Add(sp => new ColorTransitionNode(
+                                            sp.GetRequiredService<IScheduler>(),
                                             TimeSpan.FromSeconds(3),
                                             Color.Red, Color.Blue, Color.LawnGreen));
                                     })
                                     .ForLight(lightEntities.OfficeLightColor2.EntityId, c2 =>
                                     {
-                                        c2.Add(context => new ColorTransitionNode(
-                                            context.ServiceProvider.GetRequiredService<IScheduler>(),
+                                        c2.Add(sp => new ColorTransitionNode(
+                                            sp.GetRequiredService<IScheduler>(),
                                             TimeSpan.FromSeconds(3),
                                             Color.LawnGreen, Color.Red, Color.Blue));
                                     })
                                     .ForLight(lightEntities.OfficeLightColor3.EntityId, c2 =>
                                     {
-                                        c2.Add(context => new ColorTransitionNode(
-                                            context.ServiceProvider.GetRequiredService<IScheduler>(),
+                                        c2.Add(sp => new ColorTransitionNode(
+                                            sp.GetRequiredService<IScheduler>(),
                                             TimeSpan.FromSeconds(3),
                                             Color.Blue, Color.LawnGreen, Color.Red));
                                     });
                             })
-                            .TurnOffWhen(people.OnLastPersonToAsleepOrAwayObservable())
+                            .TurnOffWhenLastPersonToAsleepOrAway()
                             .AddReactiveDimmer(officeDimmerSwitch);
                     })
                     .AddNotifications(lightNotificationManager);

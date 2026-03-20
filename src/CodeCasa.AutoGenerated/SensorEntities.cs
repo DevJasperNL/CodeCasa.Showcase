@@ -18,6 +18,9 @@ public partial class SensorEntities
     /// <summary>Enumerates all numeric sensor entities currently registered (at runtime) in Home Assistant as NumericSensorEntity</summary>
     public IEnumerable<NumericSensorEntity> EnumerateAllNumeric() => _haContext.GetAllEntities().Where(e => e.EntityId.StartsWith("sensor.") && (e.EntityState?.AttributesJson?.TryGetProperty("unit_of_measurement", out _) ?? false)).Select(e => new NumericSensorEntity(e));
 
+    ///<summary>Bathroom Motion Sensor Illuminance</summary>
+    public NumericSensorEntity BathroomMotionSensorIlluminance => new(_haContext, "sensor.bathroom_motion_sensor_illuminance");
+
     ///<summary>Living Room Temperature</summary>
     public NumericSensorEntity LivingRoomTemperature => new(_haContext, "sensor.living_room_temperature");
     ///<summary>Meteorologisk Temperature</summary>
@@ -37,4 +40,6 @@ public partial class SensorEntities
     public SensorEntity OfficeSpeakerAlarms => new(_haContext, "sensor.office_speaker_alarms");
     ///<summary>Office speaker timers</summary>
     public SensorEntity OfficeSpeakerTimers => new(_haContext, "sensor.office_speaker_timers");
+    ///<summary>Upstairs Hallway Attic Motion Sensor Illuminance</summary>
+    public NumericSensorEntity UpstairsHallwayAtticMotionSensorIlluminance => new(_haContext, "sensor.upstairs_hallway_attic_motion_sensor_illuminance");
 }

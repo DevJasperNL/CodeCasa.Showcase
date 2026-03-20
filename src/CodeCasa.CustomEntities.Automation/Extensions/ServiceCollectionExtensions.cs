@@ -18,10 +18,15 @@ public static class ServiceCollectionExtensions
             .AddCodeCasaCustomCoreEntities()
             .AddLightNotifications()
 
-            .AddTransient<OfficeWallModuleSingleRocker>()
+            .AddTransient<AtticWallSwitch>()
+            .AddTransient<BathroomWallSwitch>()
+            .AddTransient<OfficeWallSwitch>()
+            .AddTransient<AtticDimmerSwitch>()
             .AddTransient<OfficeDimmerSwitch>()
 
+            .AddTransient<BathroomMotionSensor>()
             .AddTransient<OfficeMotionSensor>()
+            .AddTransient<UpstairsHallwayAtticMotionSensor>()
 
             // Dashboard Notifications
             .AddTransient<LivingRoomPanelDashboardNotifications>()

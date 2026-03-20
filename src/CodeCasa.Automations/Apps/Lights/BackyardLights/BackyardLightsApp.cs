@@ -5,11 +5,10 @@ using CodeCasa.Automations.Apps.Lights.BackyardLights.Observables;
 using CodeCasa.Lights;
 using CodeCasa.Notifications.Lights;
 using CodeCasa.Notifications.Lights.Extensions;
-using NetDaemon.AppModel;
 
 namespace CodeCasa.Automations.Apps.Lights.BackyardLights;
 
-[NetDaemonApp]
+//[NetDaemonApp]
 internal class BackyardLightsApp
 {
     public BackyardLightsApp(

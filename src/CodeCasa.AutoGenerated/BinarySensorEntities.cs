@@ -15,6 +15,10 @@ public partial class BinarySensorEntities
     public IEnumerable<BinarySensorEntity> EnumerateAll() => _haContext.GetAllEntities()
         .Where(e => e.EntityId.StartsWith("binary_sensor.")).Select(e => new BinarySensorEntity(e));
 
+    ///<summary>Bathroom Motion Sensor Occupancy</summary>
+    public BinarySensorEntity BathroomMotionSensorOccupancy => new(_haContext, "binary_sensor.bathroom_motion_sensor_occupancy");
     ///<summary>Office Motion Sensor Occupancy</summary>
     public BinarySensorEntity OfficeMotionSensorOccupancy => new(_haContext, "binary_sensor.office_motion_sensor_occupancy");
+    ///<summary>Upstairs Hallway Attic Motion Sensor Occupancy</summary>
+    public BinarySensorEntity UpstairsHallwayAtticMotionSensorOccupancy => new(_haContext, "binary_sensor.upstairs_hallway_attic_motion_sensor_occupancy");
 }
