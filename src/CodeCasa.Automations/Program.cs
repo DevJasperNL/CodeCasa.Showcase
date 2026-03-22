@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using CodeCasa.Automations.Extensions;
+using CodeCasa.Mqtt.Extensions;
 using Microsoft.Extensions.Hosting;
 using NetDaemon.AppModel;
 using NetDaemon.Extensions.Scheduler;
@@ -21,6 +22,7 @@ try
                 .AddAppsFromAssembly(Assembly.GetExecutingAssembly())
                 .AddNetDaemonScheduler()
                 .AddCodeCasa(context.Configuration)
+                .AddCodeCasaMqtt(context.Configuration)
         )
         .Build()
         .RunAsync()

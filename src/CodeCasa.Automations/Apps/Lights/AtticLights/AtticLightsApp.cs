@@ -10,7 +10,6 @@ using CodeCasa.AutomationPipelines.Lights.NetDaemon.Extensions;
 
 namespace CodeCasa.Automations.Apps.Lights.AtticLights
 {
-    [Focus]
     [NetDaemonApp]
     internal class AtticLightApp
     {

@@ -26,13 +26,6 @@ internal class OfficeLightsApp
         OfficeDimmerSwitch officeDimmerSwitch,
         PeopleEntities people)
     {
-        people.OnLastPersonToAsleepOrAwayObservable().Subscribe(_ =>
-        {
-            int i = 0;
-            i++;
-        });
-
-
         lightPipelineFactory
             .SetupLightPipeline(lightEntities.OfficeLights, builder =>
             {
@@ -45,7 +38,6 @@ internal class OfficeLightsApp
                             {
                                 c
                                     //.Add(LightParameters.Relax)
-                                    .Add<TestNode>()
                                     .ForLight(lightEntities.OfficeLightColor1.EntityId, c1 =>
                                     {
                                         c1.Add(sp => new ColorTransitionNode(
