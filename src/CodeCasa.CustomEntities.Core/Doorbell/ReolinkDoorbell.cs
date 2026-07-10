@@ -4,15 +4,12 @@ using NetDaemon.HassModel.Entities;
 
 namespace CodeCasa.CustomEntities.Core.Doorbell;
 
-public abstract class ReolinkDoorbell(CameraEntity cameraEntity, CameraEntity fluentCameraEntity)
+public abstract class ReolinkDoorbell
 {
-    public IObservable<string> FluentUrl => cameraEntity.StateAllChangesWithCurrent()
-        .Select(s => s.New?.Attributes?.AccessToken)
-        .Where(at => !string.IsNullOrEmpty(at))
-        .Select(at =>
-        {
-            var url = $"http://10.10.0.10:8123/api/camera_proxy_stream/camera.doorbell?token={at!}";
-            return url;
-        })
-        .DistinctUntilChanged();
+    private readonly CameraEntity _fluentCameraEntity;
+
+    protected ReolinkDoorbell(CameraEntity cameraEntity, CameraEntity fluentCameraEntity)
+    {
+        _fluentCameraEntity = fluentCameraEntity;
+    }
 }
