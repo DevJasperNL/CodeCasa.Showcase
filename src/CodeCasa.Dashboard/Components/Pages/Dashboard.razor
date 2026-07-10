@@ -46,6 +46,7 @@ else if (!_netDaemonConnected)
  
 <Clock Centered="@(!_homeScreenActive)" OnClick="ClockClicked" />
 <Date Visible="_homeScreenActive" />
+<DoorbellStream/>
 
 @code {
     private bool _netDaemonInitialized;

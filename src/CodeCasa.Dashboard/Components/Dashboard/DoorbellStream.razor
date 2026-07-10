@@ -1,0 +1,35 @@
+﻿@using CodeCasa.CustomEntities.Core.Doorbell
+
+@inject FrontDoorDoorbell FrontDoorDoorbell
+@implements IDisposable
+
+@if (_stream != null)
+{
+    <img src="@_stream" alt="Front Door Live Stream" />
+}
+else
+{
+    <p>Loading doorbell stream...</p>
+}
+
+@code {
+    private string? _stream;
+    private IDisposable? _subscription;
+
+    protected override void OnInitialized()
+    {
+        _subscription = FrontDoorDoorbell.FluentUrl.Subscribe(url =>
+        {
+            InvokeAsync(() =>
+            {
+                _stream = url;
+                StateHasChanged();
+            });
+        });
+    }
+
+    public void Dispose()
+    {
+        _subscription?.Dispose();
+    }
+}

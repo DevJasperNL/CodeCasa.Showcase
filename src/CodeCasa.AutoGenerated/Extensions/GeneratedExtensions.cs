@@ -11,6 +11,7 @@ public static class GeneratedExtensions
             .AddTransient<Entities>()
             .AddTransient<AutomationEntities>()
             .AddTransient<BinarySensorEntities>()
+            .AddTransient<CameraEntities>()
             .AddTransient<CoverEntities>()
             .AddTransient<InputSelectEntities>()
             .AddTransient<LightEntities>()
