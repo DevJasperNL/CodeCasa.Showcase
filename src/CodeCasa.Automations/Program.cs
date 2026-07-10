@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using CodeCasa.Automations.Extensions;
-using CodeCasa.Mqtt.Extensions;
 using Microsoft.Extensions.Hosting;
 using NetDaemon.AppModel;
 using NetDaemon.Extensions.Scheduler;

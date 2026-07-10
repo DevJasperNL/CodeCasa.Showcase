@@ -5,7 +5,6 @@ using CodeCasa.AutomationPipelines.Lights.Mqtt.Extensions;
 using CodeCasa.Automations.Apps.Lights.BackyardLights.Observables;
 using CodeCasa.CustomEntities.Automation.Extensions;
 using CodeCasa.Lights.NetDaemon.Scenes.Extensions;
-using CodeCasa.Mqtt.Extensions;
 using CodeCasa.Notifications.InputSelect.NetDaemon.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
