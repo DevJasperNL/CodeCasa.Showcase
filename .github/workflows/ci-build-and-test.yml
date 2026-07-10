@@ -22,4 +22,4 @@ jobs:
           dotnet-version: '9.0.x'
 
       - name: 🛠️ Build code
-        run: dotnet build --configuration Release -p:TreatWarningsAsErrors=true
+        run: dotnet build CodeCasa.Showcase.sln --configuration Release -p:TreatWarningsAsErrors=true
