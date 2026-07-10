@@ -12,16 +12,6 @@ public partial class LightEntities
 
     /// <summary>Enumerates all light entities currently registered (at runtime) in Home Assistant as LightEntity</summary>
     public IEnumerable<LightEntity> EnumerateAll() => _haContext.GetAllEntities().Where(e => e.EntityId.StartsWith("light.")).Select(e => new LightEntity(e));
-    ///<summary>Attic Lights</summary>
-    public LightEntity AtticLights => new(_haContext, "light.attic_lights");
-    ///<summary>Attic Spot Middle Door</summary>
-    public LightEntity AtticSpotMiddleDoor => new(_haContext, "light.attic_spot_middle_door");
-    ///<summary>Office Light Color 1</summary>
-    public LightEntity OfficeLightColor1 => new(_haContext, "light.office_light_color_1");
-    ///<summary>Office Light Color 2</summary>
-    public LightEntity OfficeLightColor2 => new(_haContext, "light.office_light_color_2");
-    ///<summary>Office Light Color 3</summary>
-    public LightEntity OfficeLightColor3 => new(_haContext, "light.office_light_color_3");
     ///<summary>Office Lights</summary>
     public LightEntity OfficeLights => new(_haContext, "light.office_lights");
     ///<summary>Backyard Door Light</summary>
@@ -36,9 +26,4 @@ public partial class LightEntities
     public LightEntity BackyardPergolaStringLights => new(_haContext, "light.backyard_pergola_string_lights");
     ///<summary>Backyard Porch Kerosene Light</summary>
     public LightEntity BackyardPorchStringLights => new(_haContext, "light.backyard_porch_string_lights");
-    ///<summary>Bathroom Lights</summary>
-    public LightEntity BathroomLights => new(_haContext, "light.bathroom_lights");
-
-
-    public LightEntity BathroomSpotWindow => new(_haContext, "light.bathroom_spot_window");
 }

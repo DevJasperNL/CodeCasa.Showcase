@@ -22,7 +22,6 @@ try
                 .AddAppsFromAssembly(Assembly.GetExecutingAssembly())
                 .AddNetDaemonScheduler()
                 .AddCodeCasa(context.Configuration)
-                .AddCodeCasaMqtt(context.Configuration)
         )
         .Build()
         .RunAsync()

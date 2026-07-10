@@ -17,6 +17,7 @@ public static class GeneratedExtensions
             .AddTransient<NotifyServices>()
             .AddTransient<PersonEntities>()
             .AddTransient<SensorEntities>()
+            .AddTransient<SceneEntities>()
             .AddTransient<WeatherEntities>();
     }
 }

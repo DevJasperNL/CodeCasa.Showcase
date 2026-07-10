@@ -4,6 +4,8 @@ using CodeCasa.CustomEntities.Automation.People;
 using CodeCasa.CustomEntities.Automation.Sensors;
 using CodeCasa.CustomEntities.Automation.Switches;
 using CodeCasa.CustomEntities.Core.Extensions;
+using CodeCasa.CustomEntities.Core.Switches;
+using CodeCasa.NetDaemon.Sensors.Composite;
 using CodeCasa.Notifications.Lights.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,23 +15,22 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddCodeCasaCustomAutomationEntities(this IServiceCollection serviceCollection)
     {
-        return serviceCollection
+        serviceCollection
 
             .AddCodeCasaCustomCoreEntities()
-            .AddLightNotifications()
+            .AddLightNotifications();
 
-            .AddTransient<AtticWallSwitch>()
-            .AddTransient<BathroomWallSwitch>()
-            .AddTransient<OfficeWallSwitch>()
-            .AddTransient<AtticDimmerSwitch>()
-            .AddTransient<OfficeDimmerSwitch>()
+        serviceCollection
+            .AddTransientImplementationsOf<HueDimmerSwitch>()
+            .AddTransientImplementationsOf<HueWallModuleDoubleRocker>()
+            .AddTransientImplementationsOf<HueWallModuleSingleRocker>()
+            .AddTransientImplementationsOf<IkeaStyrbarRemoteControl>()
+            .AddTransientImplementationsOf<IkeaRodretDimmer>();
 
-            .AddTransient<BathroomMotionSensor>()
-            .AddTransient<OfficeMotionSensor>()
-            .AddTransient<UpstairsHallwayAtticMotionSensor>()
+        serviceCollection.AddTransientImplementationsOf<MotionSensor>();
 
-            // Dashboard Notifications
-            .AddTransient<LivingRoomPanelDashboardNotifications>()
+        // Dashboard Notifications
+        serviceCollection.AddTransient<LivingRoomPanelDashboardNotifications>()
             .AddTransient<JaneDashboardNotifications>()
             .AddTransient<JasperDashboardNotifications>()
 
@@ -41,5 +42,23 @@ public static class ServiceCollectionExtensions
             .AddTransient<Jane>()
             .AddTransient<Jasper>()
             .AddTransient<PeopleEntities>();
+
+        return serviceCollection;
+    }
+
+    private static IServiceCollection AddTransientImplementationsOf<TBase>(this IServiceCollection services)
+    {
+        var baseType = typeof(TBase);
+
+        var types = AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(assembly => assembly.GetTypes())
+            .Where(type => baseType.IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract).ToArray();
+
+        foreach (var type in types)
+        {
+            services.AddTransient(type);
+        }
+
+        return services;
     }
 }

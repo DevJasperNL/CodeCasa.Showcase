@@ -14,7 +14,6 @@ internal class BackyardLightsApp
     public BackyardLightsApp(
         LightPipelineFactory pipelineFactory,
         LightEntities lightEntities,
-        LightNotificationManagerContext lightNotificationManager,
         BackyardLightsRoutineFactory backyardLightsRoutineFactory)
     {
         // We use a separate pipeline for each light string to allow for different timing on the startup routine.
@@ -35,7 +34,7 @@ internal class BackyardLightsApp
                     b
                         .TurnOnWhen(backyardLightsRoutineFactory.Create(TimeSpan.FromSeconds(index)))
                         .TurnOffWhen<BackyardLightsEnergySaving>()
-                        .AddNotifications(lightNotificationManager);
+                        .AddNotifications();
                 });
         }
 
@@ -57,7 +56,7 @@ internal class BackyardLightsApp
                     builder
                         .When(backyardLightsRoutineFactory.Create(offsetSeconds), LightParameters.Relax.AsTransitionInSeconds(transitionSeconds))
                         .TurnOffWhen<BackyardLightsEnergySaving>()
-                        .AddNotifications(lightNotificationManager);
+                        .AddNotifications();
                 });
         }
     }
