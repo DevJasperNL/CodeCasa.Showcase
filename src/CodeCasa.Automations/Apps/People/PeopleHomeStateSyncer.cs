@@ -14,7 +14,7 @@ internal class PeopleHomeStateSyncer
     {
         foreach (var person in people.All)
         {
-            person.CreateHomeObservable()
+            person.HomeWithCurrent()
                 .SubscribeTrueFalse(
                     () =>
                     {

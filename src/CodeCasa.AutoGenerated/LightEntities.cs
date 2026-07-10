@@ -26,5 +26,4 @@ public partial class LightEntities
     public LightEntity BackyardPergolaStringLights => new(_haContext, "light.backyard_pergola_string_lights");
     ///<summary>Backyard Porch Kerosene Light</summary>
     public LightEntity BackyardPorchStringLights => new(_haContext, "light.backyard_porch_string_lights");
-    ///<summary>Backyard String Lights</summary>
 }

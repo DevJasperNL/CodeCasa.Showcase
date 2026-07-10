@@ -7,13 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CodeCasa.NetDaemon.Extensions.Observables" Version="1.8.0" />
-    <PackageReference Include="CodeCasa.NetDaemon.RuntimeState" Version="1.8.0" />
-    <PackageReference Include="CodeCasa.Notifications.InputSelect.NetDaemon" Version="1.8.0" />
-    <PackageReference Include="MudBlazor" Version="8.15.0" />
-    <PackageReference Include="NetDaemon.Runtime" Version="25.48.0" />
+    <PackageReference Include="CodeCasa.NetDaemon.Extensions.Observables" Version="1.22.0" />
+    <PackageReference Include="CodeCasa.NetDaemon.RuntimeState" Version="1.22.0" />
+    <PackageReference Include="CodeCasa.Notifications.InputSelect.NetDaemon" Version="1.22.0" />
+    <PackageReference Include="MudBlazor" Version="9.7.0" />
+    <PackageReference Include="NetDaemon.Runtime" Version="26.21.0" />
     <PackageReference Include="Occurify.Reactive" Version="0.10.0" />
     <PackageReference Include="Occurify.TimeZones" Version="0.10.0" />
+    <PackageReference Include="Z.Blazor.Diagrams" Version="3.0.4.1" />
   </ItemGroup>
 
   <ItemGroup>

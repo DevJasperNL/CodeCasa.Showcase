@@ -29,7 +29,7 @@ internal class OfficeLightsNotifications
         var notificationId = $"{nameof(OfficeLightsNotifications)}_Notification";
 
         var officeLights = lightEntities.OfficeLights.ToOnOffObservable();
-        var jasperHome = jasper.CreateHomeObservable();
+        var jasperHome = jasper.HomeWithCurrent();
 
         officeLights.SubscribeOnOff(
             () =>

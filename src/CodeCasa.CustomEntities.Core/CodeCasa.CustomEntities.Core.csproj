@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NetDaemon.HassModel" Version="25.48.0" />
+    <PackageReference Include="CodeCasa.Abstractions" Version="1.22.0" />
+    <PackageReference Include="CodeCasa.NetDaemon.Extensions.Observables" Version="1.22.0" />
+    <PackageReference Include="NetDaemon.HassModel" Version="26.21.0" />
   </ItemGroup>
 
   <ItemGroup>

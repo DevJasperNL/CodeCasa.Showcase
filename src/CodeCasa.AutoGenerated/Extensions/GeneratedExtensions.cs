@@ -10,12 +10,14 @@ public static class GeneratedExtensions
         return serviceCollection
             .AddTransient<Entities>()
             .AddTransient<AutomationEntities>()
+            .AddTransient<BinarySensorEntities>()
             .AddTransient<CoverEntities>()
             .AddTransient<InputSelectEntities>()
             .AddTransient<LightEntities>()
             .AddTransient<NotifyServices>()
             .AddTransient<PersonEntities>()
             .AddTransient<SensorEntities>()
+            .AddTransient<SceneEntities>()
             .AddTransient<WeatherEntities>();
     }
 }
