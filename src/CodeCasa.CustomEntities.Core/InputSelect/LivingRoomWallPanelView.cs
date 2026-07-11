@@ -12,6 +12,7 @@ public record LivingRoomWallPanelView : TypeSafeInputSelectEntity<LivingRoomWall
     public enum States
     {
         Idle,
-        Home
+        Home,
+        Doorbell
     }
 }

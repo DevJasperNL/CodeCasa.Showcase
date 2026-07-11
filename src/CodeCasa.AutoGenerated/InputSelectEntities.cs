@@ -25,6 +25,8 @@ public partial class InputSelectEntities
     public InputSelectEntity JasperState => new(_haContext, "input_select.jasper_state");
     ///<summary>Living Room Panel Notifications</summary>
     public InputSelectEntity LivingRoomPanelNotifications => new(_haContext, "input_select.living_room_panel_notifications");
+    ///<summary>Variable Doorbell State</summary>
+    public InputSelectEntity VariableDoorbellState => new(_haContext, "input_select.variable_doorbell_state");
     ///<summary>Variable Living Room Wall Panel View</summary>
     public InputSelectEntity VariableLivingRoomWallPanelView => new(_haContext, "input_select.variable_living_room_wall_panel_view");
 }

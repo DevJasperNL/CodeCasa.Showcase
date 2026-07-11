@@ -19,7 +19,8 @@ public static class ServiceCollectionExtensions
 
             // Input Select Entities
             .AddTransient<LivingRoomWallPanelView>()
-            
+            .AddTransient<DoorbellState>()
+
             .AddTransient<ForecastHome>();
     }
 

@@ -2,12 +2,18 @@
 @using Occurify.Reactive.Extensions
 @using Occurify.TimeZones
 
-<div class="clock-container @(Centered ? "center" : "top")">
-    <h1><button @onclick="OnClick" class="unstyled-button"><b>@_currentTime.ToString("HH:mm")</b></button></h1>
+<div class="clock-container @Position.ToString().ToLower()">
+    <h1>
+        <button @onclick="OnClick" class="unstyled-button">
+            <b>@_currentTime.ToString("HH:mm")</b>
+        </button>
+    </h1>
 </div>
 
 @code {
-    [Parameter] public bool Centered { get; set; }
+    public enum ClockPosition { Centered, Top, Corner }
+
+    [Parameter] public ClockPosition Position { get; set; } = ClockPosition.Centered;
     [Parameter] public EventCallback OnClick { get; set; }
 
     private DateTime _currentTime = DateTime.Now;
@@ -30,29 +36,49 @@
         width: 100%;
         transition: all 0.5s ease;
         text-align: center;
+        left: 0;
     }
 
         .clock-container button {
             pointer-events: auto;
         }
 
-        .clock-container.center {
+        /* Centered State */
+        .clock-container.centered {
             top: 50%;
             transform: translateY(-50%);
         }
 
+            .clock-container.centered h1 {
+                font-size: 30vw;
+            }
+
+        /* Top State */
         .clock-container.top {
             top: 20px;
             transform: translateY(0);
         }
 
-        .clock-container h1 {
-            margin: 0;
-            transition: font-size 1s ease;
-            font-size: 30vw;
+            .clock-container.top h1 {
+                font-size: 15vw;
+            }
+
+        /* Corner State */
+        .clock-container.corner {
+            top: 15px;
+            left: 15px;
+            width: auto;
+            text-align: left;
+            transform: translate(0, 0);
         }
 
-        .clock-container.top h1 {
-            font-size: 15vw;
+            .clock-container.corner h1 {
+                font-size: 5vw;
+            }
+
+        /* Base H1 transitions for smooth resizing */
+        .clock-container h1 {
+            margin: 0;
+            transition: font-size 0.5s ease;
         }
 </style>

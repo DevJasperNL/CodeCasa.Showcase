@@ -13,7 +13,7 @@
 @inject LivingRoomWallPanelView LivingRoomWallPanelView
 
 <GlobalClick OnClick="GlobalClicked"/>
-<BackgroundPicture ToBackground="_homeScreenActive" />
+<BackgroundPicture ToBackground=@(_viewState != LivingRoomWallPanelView.States.Idle) />
 
 @if (!_netDaemonInitialized)
 {
@@ -35,24 +35,24 @@ else if (!_netDaemonConnected)
         <DemoMenu/>
     }
 
-    <ScrollArea Visible="_homeScreenActive">
+    <ScrollArea Visible=@(_viewState == LivingRoomWallPanelView.States.Home)>
         <Timers />
         <Alarms />
         <Notifications />
     </ScrollArea>
 
-    <Weather Visible="_homeScreenActive" />
+    <Weather Visible=@(_viewState == LivingRoomWallPanelView.States.Home) />
 }
  
-<Clock Centered="@(!_homeScreenActive)" OnClick="ClockClicked" />
-<Date Visible="_homeScreenActive" />
+<Clock Position="@(GetClockPosition())" OnClick="ClockClicked" />
+<Date Visible=@(_viewState == LivingRoomWallPanelView.States.Home) />
 <DoorbellStream/>
 
 @code {
     private bool _netDaemonInitialized;
     private bool _netDaemonConnected;
 
-    private bool _homeScreenActive;
+    private LivingRoomWallPanelView.States _viewState;
     private bool _clockWasClicked;
 
     protected override void OnInitialized()
@@ -77,10 +77,21 @@ else if (!_netDaemonConnected)
     {
         LivingRoomWallPanelView.StateChangesWithCurrent().Subscribe(state =>
         {
-            _homeScreenActive = state.New?.State == LivingRoomWallPanelView.States.Home;
+            if (state.New?.State == null)
+            {
+                return;
+            }
+            _viewState = state.New.State.Value;
             InvokeAsync(StateHasChanged);
         });
     }
+
+    private Clock.ClockPosition GetClockPosition() => _viewState switch
+    {
+        LivingRoomWallPanelView.States.Doorbell => Clock.ClockPosition.Corner,
+        LivingRoomWallPanelView.States.Home => Clock.ClockPosition.Top,
+        _ => Clock.ClockPosition.Centered
+    };
 
     private void ClockClicked()
     {

@@ -9,6 +9,7 @@ using System.Text.Json.Serialization;
 using CodeCasa.CustomEntities.Core.Events;
 using CodeCasa.CustomEntities.Core.GoogleHome;
 using CodeCasa.CustomEntities.Core.InputSelect;
+using CodeCasa.NetDaemon.Extensions.Observables;
 using NetDaemon.HassModel.Entities;
 
 namespace CodeCasa.Automations.Apps.Dashboard
@@ -23,6 +24,7 @@ namespace CodeCasa.Automations.Apps.Dashboard
             GoogleHomeAlarmEntities googleHomeAlarmEntities,
             GoogleHomeTimerEntities googleHomeTimerEntities,
             LivingRoomWallPanelView livingRoomWallPanelView,
+            DoorbellState doorbellState,
             IScheduler scheduler)
         {
             var panelInteraction = context.Events.Filter(Events.LivingRoomPanelInteractionEvent).Select(_ => true);
@@ -63,10 +65,33 @@ namespace CodeCasa.Automations.Apps.Dashboard
                     return (bool?)null;
                 })
                 .Where(b => b != null).Select(b => b!.Value);
+            var displayHomeScreen = recentInteraction.Or(infoToDisplay, OperatorDistinctness.NotDistinct);
 
-            recentInteraction.Or(infoToDisplay, OperatorDistinctness.NotDistinct).SubscribeTrueFalse(
-                    () => livingRoomWallPanelView.SelectOption(LivingRoomWallPanelView.States.Home),
-                    () => livingRoomWallPanelView.SelectOption(LivingRoomWallPanelView.States.Idle));
+            var viewFeedEvents = context.Events.Filter(Events.LivingRoomPanelViewDoorbellFeedEvent).Select(_ => true);
+            var viewFeed = viewFeedEvents
+                .Merge(
+                    viewFeedEvents
+                        .Throttle(TimeSpan.FromSeconds(30))
+                        .Select(_ => false)
+                ).Prepend(false);
+            var doorbellActive = doorbellState.ToBooleanObservable(s => s.State != DoorbellState.States.Idle);
+            var displayDoorbell = viewFeed.Merge(doorbellActive);
+
+            displayDoorbell.CombineLatest(displayHomeScreen).Subscribe(tuple =>
+            {
+                if (tuple.First)
+                {
+                    livingRoomWallPanelView.SelectOption(LivingRoomWallPanelView.States.Doorbell);
+                    return;
+                }
+                if (tuple.Second)
+                {
+                    livingRoomWallPanelView.SelectOption(LivingRoomWallPanelView.States.Home);
+                    return;
+                }
+
+                livingRoomWallPanelView.SelectOption(LivingRoomWallPanelView.States.Idle);
+            });
         }
 
         // ReSharper disable once ClassNeverInstantiated.Local

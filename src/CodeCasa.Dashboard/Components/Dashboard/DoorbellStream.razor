@@ -1,5 +1,37 @@
-﻿
-<iframe src="http://10.10.0.10:1984/webrtc.html?src=doorbell_sub&media=video+audio"
-        allow="autoplay; encrypted-media"
-        frameborder="0">
-</iframe>
+﻿<div class="doorbell-stream-container">
+    <iframe src="http://10.10.0.10:1984/webrtc.html?src=doorbell_sub&media=video+audio"
+            allow="autoplay; encrypted-media"
+            frameborder="0"
+            scrolling="no">
+    </iframe>
+</div>
+
+@code
+{
+    [Parameter] public DoorbellState State { get; set; } = DoorbellState.Hidden;
+
+    public enum DoorbellState { Hidden, Preview, Motion, Ringing }
+}
+
+<style>
+    .doorbell-stream-container {
+        position: fixed;
+        width: 480px;
+        height: 480px;
+        overflow: hidden;
+        background-color: black;
+        border-radius: 12px; /* Optional: looks nice if you are animating it in */
+    }
+
+        .doorbell-stream-container iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* Scales the 16:9 iframe relative to the 480x480 container */
+            width: 240%;
+            height: 135%;
+            border: none;
+            pointer-events: none;
+        }
+</style>
