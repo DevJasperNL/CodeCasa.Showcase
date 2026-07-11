@@ -78,30 +78,31 @@ else if (!_netDaemonConnected)
 
     private void NetDaemonInitialized()
     {
-        LivingRoomWallPanelView.StateChangesWithCurrent().Subscribe(state =>
+        LivingRoomWallPanelView.StateChangesWithCurrent().Subscribe(async state =>
         {
-            if (state.New?.State == null)
-            {
-                return;
-            }
+            if (state.New?.State == null) return;
 
             var doorbellFeedWasClicked = _doorbellFeedWasClicked;
             _doorbellFeedWasClicked = false;
             var viewState = state.New.State.Value;
+        
             if (viewState == LivingRoomWallPanelView.States.Doorbell)
             {
-                if (doorbellFeedWasClicked)
+                if (_doorbellStream != null)
                 {
-                    _doorbellStream?.LoadAsync(false).GetAwaiter().GetResult();
-                    return;
+                    // Use await inside an async lambda instead of blocking .GetAwaiter().GetResult()
+                    await _doorbellStream.LoadAsync(!doorbellFeedWasClicked);
                 }
-                _doorbellStream?.LoadAsync(true).GetAwaiter().GetResult();
-                InvokeAsync(StateHasChanged);
                 return;
             }
 
+            if (_doorbellStream != null)
+            {
+                await _doorbellStream.DisposeAsync();
+            }
+
             _viewState = viewState;
-            InvokeAsync(StateHasChanged);
+            await InvokeAsync(StateHasChanged);
         });
     }
 

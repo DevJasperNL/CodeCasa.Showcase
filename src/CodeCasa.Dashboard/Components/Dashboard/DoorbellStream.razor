@@ -28,26 +28,37 @@
 
     public async Task LoadAsync(bool hidden)
     {
-        _load = true;
-        _loadHidden = hidden;
-        if (!hidden)
+        await InvokeAsync(async () =>
         {
-            await OnVisible.InvokeAsync();
-        }
+            _load = true;
+            _loadHidden = hidden;
+            StateHasChanged();
+
+            if (!hidden)
+            {
+                await OnVisible.InvokeAsync();
+            }
+        });
     }
 
-    public void Dispose()
+    public async Task DisposeAsync()
     {
         _load = false;
+        await InvokeAsync(StateHasChanged);
     }
 
     private async Task HandleIframeLoadAsync()
     {
-        _isLoaded = true;
-        if (_loadHidden)
+        await InvokeAsync(async () =>
         {
-            await OnVisible.InvokeAsync();
-        }
+            _isLoaded = true;
+            StateHasChanged();
+
+            if (_loadHidden)
+            {
+                await OnVisible.InvokeAsync();
+            }
+        });
     }
 }
 
