@@ -1,7 +1,7 @@
-﻿@if (Visible)
+﻿@if (_load)
 {
     <div class="doorbell-stream-container">
-        @if (!isLoaded)
+        @if (!_isLoaded && !_loadHidden)
         {
             <div class="doorbell-placeholder">
                 <MudProgressCircular Color="Color.Info" Indeterminate="true" Class="mb-3" />
@@ -13,30 +13,41 @@
                 allow="autoplay; encrypted-media"
                 frameborder="0"
                 scrolling="no"
-                class="@(isLoaded ? "stream-visible" : "stream-hidden")"
-                @onload="HandleIframeLoad">
+                class="@(_isLoaded ? "stream-visible" : "stream-hidden")"
+                @onload="HandleIframeLoadAsync">
         </iframe>
     </div>
 }
 
 @code {
-    [Parameter] public bool Visible { get; set; }
-    private bool isLoaded;
-    private bool previousVisible;
+    [Parameter] public EventCallback OnVisible { get; set; }
 
-    // Resets the loading state whenever Visible changes from false to true
-    protected override void OnParametersSet()
+    private bool _load;
+    private bool _loadHidden;
+    private bool _isLoaded;
+
+    public async Task LoadAsync(bool hidden)
     {
-        if (Visible && !previousVisible)
+        _load = true;
+        _loadHidden = hidden;
+        if (!hidden)
         {
-            isLoaded = false;
+            await OnVisible.InvokeAsync();
         }
-        previousVisible = Visible;
     }
 
-    private void HandleIframeLoad()
+    public void Dispose()
     {
-        isLoaded = true;
+        _load = false;
+    }
+
+    private async Task HandleIframeLoadAsync()
+    {
+        _isLoaded = true;
+        if (_loadHidden)
+        {
+            await OnVisible.InvokeAsync();
+        }
     }
 }
 

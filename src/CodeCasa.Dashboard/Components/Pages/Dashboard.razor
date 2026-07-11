@@ -43,17 +43,20 @@ else if (!_netDaemonConnected)
 
     <Weather Visible=@(_viewState == LivingRoomWallPanelView.States.Home) />
 }
-<DoorbellStream Visible=@(_viewState == LivingRoomWallPanelView.States.Doorbell) />
+<DoorbellStream @ref="_doorbellStream" OnVisible="DoorbellStreamVisible" />
 <Clock Position="@(GetClockPosition())" OnClick="ClockClicked" />
 <Date Visible=@(_viewState == LivingRoomWallPanelView.States.Home) />
 <DoorbellButton Visible=@(_viewState == LivingRoomWallPanelView.States.Home) OnClick="DoorbellButtonClicked" />
 
 @code {
+    private DoorbellStream? _doorbellStream;
+
     private bool _netDaemonInitialized;
     private bool _netDaemonConnected;
 
     private LivingRoomWallPanelView.States _viewState;
     private bool _clockWasClicked;
+    private bool _doorbellFeedWasClicked;
 
     protected override void OnInitialized()
     {
@@ -81,9 +84,28 @@ else if (!_netDaemonConnected)
             {
                 return;
             }
-            _viewState = state.New.State.Value;
+            var viewState = state.New.State.Value;
+            if (viewState == LivingRoomWallPanelView.States.Doorbell)
+            {
+                _doorbellStream?.LoadAsync(!_doorbellFeedWasClicked).GetAwaiter().GetResult();
+            }
+
+            _doorbellFeedWasClicked = false;
+            if (viewState != LivingRoomWallPanelView.States.Doorbell)
+            {
+                // If doorbell is requested, we don't want to change the view state until the doorbell stream is loaded, so we keep the view unchanged.
+                // The doorbell stream will call back to this component when it is loaded, and then we can change the view state.
+                _viewState = viewState;
+            }
+
             InvokeAsync(StateHasChanged);
         });
+    }
+
+    private void DoorbellStreamVisible()
+    {
+        _viewState = LivingRoomWallPanelView.States.Doorbell;
+        InvokeAsync(StateHasChanged);
     }
 
     private Clock.ClockPosition GetClockPosition() => _viewState switch
@@ -110,7 +132,7 @@ else if (!_netDaemonConnected)
         {
             return;
         }
-
+        _doorbellFeedWasClicked = true;
         HaContext.SendEvent(Events.LivingRoomPanelViewDoorbellFeedEvent);
     }
 
