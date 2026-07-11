@@ -43,10 +43,10 @@ else if (!_netDaemonConnected)
 
     <Weather Visible=@(_viewState == LivingRoomWallPanelView.States.Home) />
 }
- 
+<DoorbellStream Visible=@(_viewState == LivingRoomWallPanelView.States.Doorbell) />
 <Clock Position="@(GetClockPosition())" OnClick="ClockClicked" />
 <Date Visible=@(_viewState == LivingRoomWallPanelView.States.Home) />
-<DoorbellStream/>
+<DoorbellButton Visible=@(_viewState == LivingRoomWallPanelView.States.Home) OnClick="DoorbellButtonClicked" />
 
 @code {
     private bool _netDaemonInitialized;
@@ -104,8 +104,22 @@ else if (!_netDaemonConnected)
         LivingRoomWallPanelView.SelectOption(LivingRoomWallPanelView.States.Idle);
     }
 
+    private void DoorbellButtonClicked()
+    {
+        if (!_netDaemonConnected)
+        {
+            return;
+        }
+
+        HaContext.SendEvent(Events.LivingRoomPanelViewDoorbellFeedEvent);
+    }
+
     private void GlobalClicked()
     {
+        if (LivingRoomWallPanelView.State != LivingRoomWallPanelView.States.Idle)
+        {
+            return;
+        }
         if (_clockWasClicked)
         {
             // We don't want to fire the event if the clock was clicked (as it would immediately go to the home screen again).

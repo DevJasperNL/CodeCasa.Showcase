@@ -34,9 +34,10 @@
         pointer-events: none;
         position: fixed;
         width: 100%;
-        transition: all 0.5s ease;
         text-align: center;
         left: 0;
+        /* Explicit transitions for smooth animation */
+        transition: top 0.5s ease, left 0.5s ease, transform 0.5s ease;
     }
 
         .clock-container button {
@@ -45,40 +46,38 @@
 
         /* Centered State */
         .clock-container.centered {
-            top: 50%;
-            transform: translateY(-50%);
+            top: 20px;
+            left: 0px;
         }
 
             .clock-container.centered h1 {
-                font-size: 30vw;
+                font-size: 144px; /* 30vw at 480px width */
             }
 
         /* Top State */
         .clock-container.top {
             top: 20px;
-            transform: translateY(0);
+            left: 0;
         }
 
             .clock-container.top h1 {
-                font-size: 15vw;
+                font-size: 72px; /* 15vw at 480px width */
             }
 
         /* Corner State */
         .clock-container.corner {
             top: 15px;
-            left: 15px;
-            width: auto;
-            text-align: left;
-            transform: translate(0, 0);
+            left: -180px;
         }
 
             .clock-container.corner h1 {
-                font-size: 5vw;
+                font-size: 24px; /* 5vw at 480px width */
             }
 
         /* Base H1 transitions for smooth resizing */
         .clock-container h1 {
             margin: 0;
             transition: font-size 0.5s ease;
+            white-space: nowrap;
         }
 </style>

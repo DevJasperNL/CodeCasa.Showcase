@@ -1,16 +1,43 @@
-﻿<div class="doorbell-stream-container">
-    <iframe src="http://10.10.0.10:1984/webrtc.html?src=doorbell_sub&media=video+audio"
-            allow="autoplay; encrypted-media"
-            frameborder="0"
-            scrolling="no">
-    </iframe>
-</div>
-
-@code
+﻿@if (Visible)
 {
-    [Parameter] public DoorbellState State { get; set; } = DoorbellState.Hidden;
+    <div class="doorbell-stream-container">
+        @if (!isLoaded)
+        {
+            <div class="doorbell-placeholder">
+                <MudProgressCircular Color="Color.Info" Indeterminate="true" Class="mb-3" />
+                <p class="m-0">Connecting to doorbell...</p>
+            </div>
+        }
 
-    public enum DoorbellState { Hidden, Preview, Motion, Ringing }
+        <iframe src="http://10.10.0.10:1984/webrtc.html?src=doorbell_sub&media=video+audio"
+                allow="autoplay; encrypted-media"
+                frameborder="0"
+                scrolling="no"
+                class="@(isLoaded ? "stream-visible" : "stream-hidden")"
+                @onload="HandleIframeLoad">
+        </iframe>
+    </div>
+}
+
+@code {
+    [Parameter] public bool Visible { get; set; }
+    private bool isLoaded;
+    private bool previousVisible;
+
+    // Resets the loading state whenever Visible changes from false to true
+    protected override void OnParametersSet()
+    {
+        if (Visible && !previousVisible)
+        {
+            isLoaded = false;
+        }
+        previousVisible = Visible;
+    }
+
+    private void HandleIframeLoad()
+    {
+        isLoaded = true;
+    }
 }
 
 <style>
@@ -20,18 +47,43 @@
         height: 480px;
         overflow: hidden;
         background-color: black;
-        border-radius: 12px; /* Optional: looks nice if you are animating it in */
     }
 
-        .doorbell-stream-container iframe {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            /* Scales the 16:9 iframe relative to the 480x480 container */
-            width: 240%;
-            height: 135%;
-            border: none;
-            pointer-events: none;
-        }
+    .doorbell-placeholder {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-family: sans-serif;
+        z-index: 2;
+    }
+
+    .doorbell-stream-container iframe {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 240%;
+        height: 135%;
+        border: none;
+        pointer-events: none;
+        z-index: 1;
+        transition: opacity 0.3s ease;
+    }
+
+    .stream-hidden {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .stream-visible {
+        opacity: 1;
+        visibility: visible;
+    }
 </style>
