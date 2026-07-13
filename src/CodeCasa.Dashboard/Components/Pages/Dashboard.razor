@@ -84,7 +84,7 @@ else if (!_netDaemonConnected)
             var doorbellFeedWasClicked = _doorbellFeedWasClicked;
             _doorbellFeedWasClicked = false;
             var viewState = state.New.State.Value;
-        
+
             if (viewState == LivingRoomWallPanelView.States.Doorbell)
             {
                 if (_doorbellStream != null)
@@ -92,6 +92,7 @@ else if (!_netDaemonConnected)
                     // Use await inside an async lambda instead of blocking .GetAwaiter().GetResult()
                     await _doorbellStream.LoadAsync(!doorbellFeedWasClicked);
                 }
+
                 return;
             }
 
@@ -135,6 +136,7 @@ else if (!_netDaemonConnected)
         {
             return;
         }
+
         _doorbellFeedWasClicked = true;
         LivingRoomWallPanelView.SelectOption(LivingRoomWallPanelView.States.Doorbell);
     }
@@ -143,8 +145,10 @@ else if (!_netDaemonConnected)
     {
         if (LivingRoomWallPanelView.State != LivingRoomWallPanelView.States.Idle)
         {
+            _clockWasClicked = false;
             return;
         }
+
         if (_clockWasClicked)
         {
             // We don't want to fire the event if the clock was clicked (as it would immediately go to the home screen again).
@@ -153,6 +157,8 @@ else if (!_netDaemonConnected)
             _clockWasClicked = false;
             return;
         }
+
         LivingRoomWallPanelView.SelectOption(LivingRoomWallPanelView.States.Home);
     }
+
 }

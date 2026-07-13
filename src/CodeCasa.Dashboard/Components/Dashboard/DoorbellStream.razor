@@ -1,15 +1,15 @@
 ﻿@if (_load)
 {
-    <div class="doorbell-stream-container @(_fadeOut ? "fade-out" : "")">
+    <div class="@GetContainerClass()">
         @if (!_isLoaded && !_loadHidden)
         {
-            <div class="doorbell-placeholder @(_fadeInPlaceholder ? "fade-in" : "")">
+            <div class="doorbell-placeholder">
                 <MudProgressCircular Color="Color.Info" Indeterminate="true" Class="mb-3" />
                 <p class="m-0">Connecting to doorbell...</p>
             </div>
         }
 
-        <iframe src="http://10.10.0.10:1984/webrtc.html?src=doorbell_sub&media=video+audio"
+        <iframe src="@StreamUrl"
                 allow="autoplay; encrypted-media"
                 frameborder="0"
                 scrolling="no"
@@ -21,12 +21,12 @@
 
 @code {
     [Parameter] public EventCallback OnVisible { get; set; }
+    [Parameter] public string StreamUrl { get; set; } = "http://10.10.0.10:1984/webrtc.html?src=doorbell_sub&media=video+audio";
 
     private bool _load;
     private bool _loadHidden;
     private bool _isLoaded;
-    private bool _fadeInPlaceholder;
-    private bool _fadeInStream;
+    private bool _fadeIn;
     private bool _fadeOut;
 
     public async Task LoadAsync(bool hidden)
@@ -37,14 +37,17 @@
             _loadHidden = hidden;
             _fadeOut = false;
             StateHasChanged();
-
+            // Small delay to allow DOM insertion before triggering CSS transitions
+            await Task.Delay(10);
+            _fadeIn = true;
             if (!hidden)
             {
-                // Small delay to ensure the DOM is rendered before fading in
-                await Task.Delay(10);
-                _fadeInPlaceholder = true;
                 StateHasChanged();
                 await OnVisible.InvokeAsync();
+            }
+            else
+            {
+                StateHasChanged();
             }
         });
     }
@@ -57,11 +60,11 @@
             StateHasChanged();
 
             // Wait for fade-out animation to complete
-            await Task.Delay(500);
+            await Task.Delay(2500);
 
             _load = false;
-            _fadeInPlaceholder = false;
-            _fadeInStream = false;
+            _fadeIn = false;
+            _fadeOut = false;
             _isLoaded = false;
             StateHasChanged();
         });
@@ -71,31 +74,26 @@
     {
         await InvokeAsync(async () =>
         {
-            _isLoaded = true;
-            StateHasChanged();
+        _isLoaded = true;
+        StateHasChanged();
 
-            if (_loadHidden)
-            {
-                // Small delay to ensure the DOM is rendered before fading in
-                await Task.Delay(10);
-                _fadeInStream = true;
-                StateHasChanged();
-                await OnVisible.InvokeAsync();
-            }
+        if (_loadHidden)
+        {
+            await Task.Delay(10);
+            await OnVisible.InvokeAsync();
+        }
         });
     }
 
     private string GetStreamClass()
     {
-        if (_loadHidden && _fadeInStream)
-        {
-            return "stream-visible";
-        }
-        else if (!_loadHidden && _isLoaded)
-        {
-            return "stream-visible";
-        }
-        return "stream-hidden";
+        return _isLoaded ? "stream-visible" : "stream-hidden";
+    }
+
+    private string GetContainerClass()
+    {
+        // Note: we use background-color: transparent when _loadHidden is true to prevent a black background while loading.
+        return $"doorbell-stream-container {(_fadeIn ? "fade-in" : "")} {(_fadeOut ? "fade-out" : "")} background-color: {(_loadHidden ? "transparent" : "black")}";
     }
 }
 
@@ -105,14 +103,17 @@
         width: 480px;
         height: 480px;
         overflow: hidden;
-        background-color: black;
-        transition: opacity 0.5s ease;
-        opacity: 1;
+        transition: opacity 2.5s ease;
+        opacity: 0; /* Start hidden to prevent black flash */
     }
 
-    .doorbell-stream-container.fade-out {
-        opacity: 0;
-    }
+        .doorbell-stream-container.fade-in {
+            opacity: 1;
+        }
+
+        .doorbell-stream-container.fade-out {
+            opacity: 0;
+        }
 
     .doorbell-placeholder {
         position: absolute;
@@ -127,11 +128,6 @@
         color: white;
         font-family: sans-serif;
         z-index: 2;
-        opacity: 0;
-        transition: opacity 0.5s ease;
-    }
-
-    .doorbell-placeholder.fade-in {
         opacity: 1;
     }
 
@@ -145,7 +141,7 @@
         border: none;
         pointer-events: none;
         z-index: 1;
-        transition: opacity 0.5s ease;
+        transition: opacity 2.5s ease;
     }
 
     .stream-hidden {
