@@ -1,9 +1,9 @@
 ﻿@if (_load)
 {
-    <div class="doorbell-stream-container">
+    <div class="doorbell-stream-container @(_fadeOut ? "fade-out" : "")">
         @if (!_isLoaded && !_loadHidden)
         {
-            <div class="doorbell-placeholder">
+            <div class="doorbell-placeholder @(_fadeInPlaceholder ? "fade-in" : "")">
                 <MudProgressCircular Color="Color.Info" Indeterminate="true" Class="mb-3" />
                 <p class="m-0">Connecting to doorbell...</p>
             </div>
@@ -13,7 +13,7 @@
                 allow="autoplay; encrypted-media"
                 frameborder="0"
                 scrolling="no"
-                class="@(_isLoaded ? "stream-visible" : "stream-hidden")"
+                class="@GetStreamClass()"
                 @onload="HandleIframeLoadAsync">
         </iframe>
     </div>
@@ -25,6 +25,9 @@
     private bool _load;
     private bool _loadHidden;
     private bool _isLoaded;
+    private bool _fadeInPlaceholder;
+    private bool _fadeInStream;
+    private bool _fadeOut;
 
     public async Task LoadAsync(bool hidden)
     {
@@ -32,10 +35,15 @@
         {
             _load = true;
             _loadHidden = hidden;
+            _fadeOut = false;
             StateHasChanged();
 
             if (!hidden)
             {
+                // Small delay to ensure the DOM is rendered before fading in
+                await Task.Delay(10);
+                _fadeInPlaceholder = true;
+                StateHasChanged();
                 await OnVisible.InvokeAsync();
             }
         });
@@ -43,8 +51,20 @@
 
     public async Task DisposeAsync()
     {
-        _load = false;
-        await InvokeAsync(StateHasChanged);
+        await InvokeAsync(async () =>
+        {
+            _fadeOut = true;
+            StateHasChanged();
+
+            // Wait for fade-out animation to complete
+            await Task.Delay(500);
+
+            _load = false;
+            _fadeInPlaceholder = false;
+            _fadeInStream = false;
+            _isLoaded = false;
+            StateHasChanged();
+        });
     }
 
     private async Task HandleIframeLoadAsync()
@@ -56,9 +76,26 @@
 
             if (_loadHidden)
             {
+                // Small delay to ensure the DOM is rendered before fading in
+                await Task.Delay(10);
+                _fadeInStream = true;
+                StateHasChanged();
                 await OnVisible.InvokeAsync();
             }
         });
+    }
+
+    private string GetStreamClass()
+    {
+        if (_loadHidden && _fadeInStream)
+        {
+            return "stream-visible";
+        }
+        else if (!_loadHidden && _isLoaded)
+        {
+            return "stream-visible";
+        }
+        return "stream-hidden";
     }
 }
 
@@ -69,6 +106,12 @@
         height: 480px;
         overflow: hidden;
         background-color: black;
+        transition: opacity 0.5s ease;
+        opacity: 1;
+    }
+
+    .doorbell-stream-container.fade-out {
+        opacity: 0;
     }
 
     .doorbell-placeholder {
@@ -84,6 +127,12 @@
         color: white;
         font-family: sans-serif;
         z-index: 2;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+
+    .doorbell-placeholder.fade-in {
+        opacity: 1;
     }
 
     .doorbell-stream-container iframe {
@@ -96,7 +145,7 @@
         border: none;
         pointer-events: none;
         z-index: 1;
-        transition: opacity 0.3s ease;
+        transition: opacity 0.5s ease;
     }
 
     .stream-hidden {

@@ -1,5 +1,4 @@
 ﻿@page "/"
-@using CodeCasa.CustomEntities.Core.Events
 @using CodeCasa.CustomEntities.Core.InputSelect
 @using CodeCasa.Dashboard.Components.Demo
 @using CodeCasa.Dashboard.Components.Dashboard
@@ -137,7 +136,7 @@ else if (!_netDaemonConnected)
             return;
         }
         _doorbellFeedWasClicked = true;
-        HaContext.SendEvent(Events.LivingRoomPanelViewDoorbellFeedEvent);
+        LivingRoomWallPanelView.SelectOption(LivingRoomWallPanelView.States.Doorbell);
     }
 
     private void GlobalClicked()
@@ -154,6 +153,6 @@ else if (!_netDaemonConnected)
             _clockWasClicked = false;
             return;
         }
-        HaContext.SendEvent(Events.LivingRoomPanelInteractionEvent);
+        LivingRoomWallPanelView.SelectOption(LivingRoomWallPanelView.States.Home);
     }
 }
