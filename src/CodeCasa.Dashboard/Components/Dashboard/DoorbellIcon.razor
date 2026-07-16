@@ -1,0 +1,72 @@
+﻿
+<div class="ringing-container @(Visible ? "visible" : "hidden")">
+    <MudIcon Icon="@Icons.Material.Filled.NotificationsActive"
+                   Color="Color.Warning"
+                   Size="Size.Large"
+                   Class="bell-ringing" />
+</div>
+
+@code {
+
+    [Parameter] public bool Visible { get; set; } = true;
+}
+
+<style>
+    .ringing-container {
+        text-align: center;
+        position: fixed;
+        pointer-events: none;
+        top: 12px;
+        right: 20px;
+        overflow-y: visible;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.visible {
+    opacity: 1;
+}
+
+.hidden {
+    opacity: 0;
+}
+
+    @@keyframes ring {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        12% {
+            transform: rotate(24deg);
+        }
+
+        24% {
+            transform: rotate(-18deg);
+        }
+
+        36% {
+            transform: rotate(10deg);
+        }
+
+        48% {
+            transform: rotate(-6deg);
+        }
+
+        60% {
+            transform: rotate(3deg);
+        }
+
+        72% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(0deg);
+        }
+    }
+
+    .bell-ringing {
+        transform-origin: top center;
+        animation: ring 2s ease-in-out infinite;
+    }
+</style>

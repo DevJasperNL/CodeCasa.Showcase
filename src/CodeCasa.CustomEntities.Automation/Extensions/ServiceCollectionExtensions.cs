@@ -16,7 +16,6 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddCodeCasaCustomAutomationEntities(this IServiceCollection serviceCollection)
     {
         serviceCollection
-
             .AddCodeCasaCustomCoreEntities()
             .AddLightNotifications();
 
@@ -39,8 +38,7 @@ public static class ServiceCollectionExtensions
             .AddTransient<JasperPhoneNotifications>()
             
             // People
-            .AddTransient<Jane>()
-            .AddTransient<Jasper>()
+            .AddTransientImplementationsOf<CompositePersonEntity>()
             .AddTransient<PeopleEntities>();
 
         return serviceCollection;

@@ -1,0 +1,165 @@
+﻿@inject IConfiguration Configuration
+
+@if (_load)
+{
+    <div class="@GetContainerClass()">
+        @if (!_isLoaded && !_loadHidden)
+        {
+            <div class="doorbell-placeholder">
+                <MudProgressCircular Color="Color.Info" Indeterminate="true" Class="mb-3" />
+                <p class="m-0">Connecting to doorbell...</p>
+            </div>
+        }
+
+        <iframe 
+                src="@GetStreamUrl()"
+                allow="autoplay; encrypted-media"
+                frameborder="0"
+                scrolling="no"
+                class="@GetStreamClass()"
+                @onload="HandleIframeLoadAsync">
+        </iframe>
+    </div>
+}
+
+@code {
+    [Parameter] public EventCallback OnVisible { get; set; }
+    [Parameter] public string? StreamUrl { get; set; }
+
+    private bool _load;
+    private bool _loadHidden;
+    private bool _isLoaded;
+    private bool _fadeIn;
+    private bool _fadeOut;
+
+    private string GetStreamUrl() => StreamUrl ?? Configuration["Doorbell:StreamUrl"] ?? string.Empty;
+
+    public async Task LoadAsync(bool hidden)
+    {
+        await InvokeAsync(async () =>
+        {
+            _load = true;
+            _loadHidden = hidden;
+            _fadeOut = false;
+            StateHasChanged();
+            // Small delay to allow DOM insertion before triggering CSS transitions
+            await Task.Delay(10);
+            _fadeIn = true;
+            if (!hidden)
+            {
+                StateHasChanged();
+                await OnVisible.InvokeAsync();
+            }
+            else
+            {
+                StateHasChanged();
+            }
+        });
+    }
+
+    public async Task DisposeAsync()
+    {
+        await InvokeAsync(async () =>
+        {
+            _fadeOut = true;
+            StateHasChanged();
+
+            // Wait for fade-out animation to complete
+            await Task.Delay(500);
+
+            _load = false;
+            _fadeIn = false;
+            _fadeOut = false;
+            _isLoaded = false;
+            StateHasChanged();
+        });
+    }
+
+    private async Task HandleIframeLoadAsync()
+    {
+        // Note: this extra delay prevents the "pause" icon from being visible on my ns-panel pro. This is not required for all clients.
+        await Task.Delay(500);
+
+        await InvokeAsync(async () =>
+        {
+            _isLoaded = true;
+            StateHasChanged();
+
+            if (_loadHidden)
+            {
+                await Task.Delay(10);
+                await OnVisible.InvokeAsync();
+            }
+        });
+    }
+
+    private string GetStreamClass()
+    {
+        return _isLoaded ? "stream-visible" : "stream-hidden";
+    }
+
+    private string GetContainerClass()
+    {
+        // Note: we use background-color: transparent when _loadHidden is true to prevent a black background while loading.
+        return $"doorbell-stream-container {(_fadeIn ? "fade-in" : "")} {(_fadeOut ? "fade-out" : "")} background-color: {(_loadHidden ? "transparent" : "black")}";
+    }
+
+}
+
+<style>
+    .doorbell-stream-container {
+        position: fixed;
+        width: 480px;
+        height: 480px;
+        overflow: hidden;
+        transition: opacity .5s ease;
+        opacity: 0; /* Start hidden to prevent black flash */
+    }
+
+        .doorbell-stream-container.fade-in {
+            opacity: 1;
+        }
+
+        .doorbell-stream-container.fade-out {
+            opacity: 0;
+        }
+
+    .doorbell-placeholder {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-family: sans-serif;
+        z-index: 2;
+        opacity: 1;
+    }
+
+    .doorbell-stream-container iframe {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 240%;
+        height: 135%;
+        border: none;
+        pointer-events: none;
+        z-index: 1;
+        transition: opacity .5s ease;
+    }
+
+    .stream-hidden {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .stream-visible {
+        opacity: 1;
+        visibility: visible;
+    }
+</style>

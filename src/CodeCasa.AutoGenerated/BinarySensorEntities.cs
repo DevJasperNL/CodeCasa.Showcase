@@ -17,6 +17,10 @@ public partial class BinarySensorEntities
 
     ///<summary>Bathroom Motion Sensor Occupancy</summary>
     public BinarySensorEntity BathroomMotionSensorOccupancy => new(_haContext, "binary_sensor.bathroom_motion_sensor_occupancy");
+    ///<summary>Front Door Doorbell Person</summary>
+    public BinarySensorEntity FrontDoorFrontDoorDoorbellPerson => new(_haContext, "binary_sensor.front_door_front_door_doorbell_person");
+    ///<summary>Front Door Doorbell Visitor</summary>
+    public BinarySensorEntity FrontDoorFrontDoorDoorbellVisitor => new(_haContext, "binary_sensor.front_door_front_door_doorbell_visitor");
     ///<summary>Office Motion Sensor Occupancy</summary>
     public BinarySensorEntity OfficeMotionSensorOccupancy => new(_haContext, "binary_sensor.office_motion_sensor_occupancy");
     ///<summary>Upstairs Hallway Attic Motion Sensor Occupancy</summary>

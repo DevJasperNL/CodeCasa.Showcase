@@ -6,5 +6,6 @@
         public const string LivingRoomPanelNotificationDemoEvent = nameof(LivingRoomPanelNotificationDemoEvent);
         public const string PhoneNotificationDemoEvent = nameof(PhoneNotificationDemoEvent);
         public const string LivingRoomPanelInteractionEvent = nameof(LivingRoomPanelInteractionEvent);
+        public const string LivingRoomPanelViewDoorbellFeedEvent = nameof(LivingRoomPanelViewDoorbellFeedEvent);
     }
 }
