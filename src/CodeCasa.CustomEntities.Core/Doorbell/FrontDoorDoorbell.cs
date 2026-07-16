@@ -2,6 +2,6 @@
 
 namespace CodeCasa.CustomEntities.Core.Doorbell
 {
-    public class FrontDoorDoorbell(CameraEntities cameraEntities) 
-        : ReolinkDoorbell(cameraEntities.Doorbell, cameraEntities.FrontDoorFrontDoorDoorbellFluent);
+    public class FrontDoorDoorbell(BinarySensorEntities binarySensorEntities) 
+        : ReolinkDoorbell(binarySensorEntities.FrontDoorFrontDoorDoorbellPerson, binarySensorEntities.FrontDoorFrontDoorDoorbellVisitor);
 }
