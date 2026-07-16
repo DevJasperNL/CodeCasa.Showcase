@@ -1,4 +1,6 @@
-﻿@if (_load)
+﻿@inject IConfiguration Configuration
+
+@if (_load)
 {
     <div class="@GetContainerClass()">
         @if (!_isLoaded && !_loadHidden)
@@ -10,7 +12,7 @@
         }
 
         <iframe 
-                src="@StreamUrl"
+                src="@GetStreamUrl()"
                 allow="autoplay; encrypted-media"
                 frameborder="0"
                 scrolling="no"
@@ -22,13 +24,15 @@
 
 @code {
     [Parameter] public EventCallback OnVisible { get; set; }
-    [Parameter] public string StreamUrl { get; set; } = "http://10.10.0.10:1984/webrtc.html?src=doorbell_sub&media=video+audio";
+    [Parameter] public string? StreamUrl { get; set; }
 
     private bool _load;
     private bool _loadHidden;
     private bool _isLoaded;
     private bool _fadeIn;
     private bool _fadeOut;
+
+    private string GetStreamUrl() => StreamUrl ?? Configuration["Doorbell:StreamUrl"] ?? string.Empty;
 
     public async Task LoadAsync(bool hidden)
     {
