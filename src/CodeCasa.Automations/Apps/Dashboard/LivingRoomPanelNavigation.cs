@@ -77,10 +77,6 @@ namespace CodeCasa.Automations.Apps.Dashboard
         private void DetermineDesiredStateAndActivateWhenAppropriate()
         {
             var desiredState = DetermineDesiredState();
-            if (_livingRoomWallPanelView.State == desiredState)
-            {
-                return;
-            }
             if (desiredState == LivingRoomWallPanelView.States.Doorbell)
             {
                 ActivateStateAfterMinimumTimeHasPassed(LivingRoomWallPanelView.States.Doorbell, TimeSpan.Zero);

@@ -1,15 +1,18 @@
 ﻿@page "/"
+@using System.Reactive
+@using System.Reactive.Linq
+@using CodeCasa.CustomEntities.Core.Doorbell
 @using CodeCasa.CustomEntities.Core.InputSelect
 @using CodeCasa.Dashboard.Components.Demo
 @using CodeCasa.Dashboard.Components.Dashboard
+@using CodeCasa.NetDaemon.Extensions.Observables
 @using CodeCasa.NetDaemon.RuntimeState
-@using global::NetDaemon.HassModel
 @using global::NetDaemon.HassModel.Entities
 
-@inject IHaContext HaContext
 @inject IWebHostEnvironment Env
 @inject NetDaemonRuntimeStateService NetDaemonConnectionStateService
 @inject LivingRoomWallPanelView LivingRoomWallPanelView
+@inject FrontDoorDoorbell FrontDoorDoorbell
 
 <GlobalClick OnClick="GlobalClicked"/>
 <BackgroundPicture ToBackground=@(_viewState != LivingRoomWallPanelView.States.Idle) />
@@ -46,6 +49,7 @@ else if (!_netDaemonConnected)
 <Clock Position="@(GetClockPosition())" OnClick="ClockClicked" />
 <Date Visible=@(_viewState == LivingRoomWallPanelView.States.Home) />
 <DoorbellButton Visible=@(_viewState == LivingRoomWallPanelView.States.Home) OnClick="DoorbellButtonClicked" />
+<DoorbellIcon Visible=@_doorbellPressed />
 
 @code {
     private DoorbellStream? _doorbellStream;
@@ -56,6 +60,7 @@ else if (!_netDaemonConnected)
     private LivingRoomWallPanelView.States _viewState;
     private bool _clockWasClicked;
     private bool _doorbellFeedWasClicked;
+    private bool _doorbellPressed;
 
     protected override void OnInitialized()
     {
@@ -77,32 +82,40 @@ else if (!_netDaemonConnected)
 
     private void NetDaemonInitialized()
     {
-        LivingRoomWallPanelView.StateChangesWithCurrent().Subscribe(async state =>
-        {
-            if (state.New?.State == null) return;
-
-            var doorbellFeedWasClicked = _doorbellFeedWasClicked;
-            _doorbellFeedWasClicked = false;
-            var viewState = state.New.State.Value;
-
-            if (viewState == LivingRoomWallPanelView.States.Doorbell)
+        LivingRoomWallPanelView.StateChangesWithCurrent()
+            .SelectMany(async state =>
             {
-                if (_doorbellStream != null)
+                if (state.New?.State == null) return Unit.Default;
+
+                var doorbellFeedWasClicked = _doorbellFeedWasClicked;
+                _doorbellFeedWasClicked = false;
+                var viewState = state.New.State.Value;
+
+                if (viewState == LivingRoomWallPanelView.States.Doorbell)
                 {
-                    // Use await inside an async lambda instead of blocking .GetAwaiter().GetResult()
-                    await _doorbellStream.LoadAsync(!doorbellFeedWasClicked);
+                    if (_doorbellStream != null)
+                    {
+                        await _doorbellStream.LoadAsync(!doorbellFeedWasClicked);
+                    }
+
+                    return Unit.Default;
                 }
 
-                return;
-            }
+                _viewState = viewState;
+                if (_doorbellStream != null)
+                {
+                    await _doorbellStream.DisposeAsync();
+                }
 
-            if (_doorbellStream != null)
-            {
-                await _doorbellStream.DisposeAsync();
-            }
+                return Unit.Default;
+            })
+            .Subscribe(_ => InvokeAsync(StateHasChanged)
+            );
 
-            _viewState = viewState;
-            await InvokeAsync(StateHasChanged);
+        FrontDoorDoorbell.BellPressed.ToOnOffObservable().Subscribe(pressed =>
+        {
+            _doorbellPressed = pressed;
+            InvokeAsync(StateHasChanged);
         });
     }
 

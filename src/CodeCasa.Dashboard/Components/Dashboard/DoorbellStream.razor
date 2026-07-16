@@ -9,7 +9,8 @@
             </div>
         }
 
-        <iframe src="@StreamUrl"
+        <iframe 
+                src="@StreamUrl"
                 allow="autoplay; encrypted-media"
                 frameborder="0"
                 scrolling="no"
@@ -60,7 +61,7 @@
             StateHasChanged();
 
             // Wait for fade-out animation to complete
-            await Task.Delay(2500);
+            await Task.Delay(500);
 
             _load = false;
             _fadeIn = false;
@@ -72,16 +73,19 @@
 
     private async Task HandleIframeLoadAsync()
     {
+        // Note: this extra delay prevents the "pause" icon from being visible on my ns-panel pro. This is not required for all clients.
+        await Task.Delay(500);
+
         await InvokeAsync(async () =>
         {
-        _isLoaded = true;
-        StateHasChanged();
+            _isLoaded = true;
+            StateHasChanged();
 
-        if (_loadHidden)
-        {
-            await Task.Delay(10);
-            await OnVisible.InvokeAsync();
-        }
+            if (_loadHidden)
+            {
+                await Task.Delay(10);
+                await OnVisible.InvokeAsync();
+            }
         });
     }
 
@@ -95,6 +99,7 @@
         // Note: we use background-color: transparent when _loadHidden is true to prevent a black background while loading.
         return $"doorbell-stream-container {(_fadeIn ? "fade-in" : "")} {(_fadeOut ? "fade-out" : "")} background-color: {(_loadHidden ? "transparent" : "black")}";
     }
+
 }
 
 <style>
@@ -103,7 +108,7 @@
         width: 480px;
         height: 480px;
         overflow: hidden;
-        transition: opacity 2.5s ease;
+        transition: opacity .5s ease;
         opacity: 0; /* Start hidden to prevent black flash */
     }
 
@@ -141,7 +146,7 @@
         border: none;
         pointer-events: none;
         z-index: 1;
-        transition: opacity 2.5s ease;
+        transition: opacity .5s ease;
     }
 
     .stream-hidden {
