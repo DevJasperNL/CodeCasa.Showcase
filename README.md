@@ -36,7 +36,7 @@ The source code for this dashboard is available in this repository.
 #### Key Features
 - **Custom webview:** Using the posts from [Blakadder](https://blakadder.com/nspanel-pro-sideload/)
 - **Proximity detection:** Managed by the Automate app, which calls a Home Assistant webhook. The webhook triggers an automation that the panel subscribes to.
-- **Doorbell feed display:** Displaying a WebRTC feed when a person/doorbell press is detected. See [Components](src/CodeCasa.Dashboard/Components/Dashboard/DoorbellStream.razor).
+- **Reolink Doorbell feed:** Displays a WebRTC feed when a person or doorbell press is detected. See [Components](src/CodeCasa.Dashboard/Components/Dashboard/DoorbellStream.razor).
 - **Blazor Dashboard:** The razor page/components can be found here: [Components](src/CodeCasa.Dashboard/Components).
 - **Panel state:** Stored in an input select value and managed in [LivingRoomPanelNavigation.cs](src/CodeCasa.Automations/Apps/Dashboard/LivingRoomPanelNavigation.cs).
 - **Google timers & alarms:** Implemented via the HACS integration [ha-google-home](https://github.com/leikoilja/ha-google-home).
