@@ -28,13 +28,15 @@ I've never been a fan of large tablets that display every available entity. Part
 
 It was a fun challenge to get it working in a smooth and intuitive way. Rather than using a standard Home Assistant dashboard, I built a **custom dashboard using Blazor**. Here’s a preview:
 
-![Gif demonstrating NSPanel Pro](img/nspanel_pro_demo.gif "NSPanel Pro demo")
+![Gif demonstrating NSPanel Pro Interaction](img/nspanel_pro_interaction_demo.gif "NSPanel Pro interaction demo")
+![Gif demonstrating NSPanel Pro Doorbell feed](img/nspanel_pro_doorbell_demo.gif "NSPanel Pro doorbell demo")
 
 The source code for this dashboard is available in this repository.  
 
 #### Key Features
-- **Custom webview** Using the posts from [Blakadder](https://blakadder.com/nspanel-pro-sideload/)
+- **Custom webview:** Using the posts from [Blakadder](https://blakadder.com/nspanel-pro-sideload/)
 - **Proximity detection:** Managed by the Automate app, which calls a Home Assistant webhook. The webhook triggers an automation that the panel subscribes to.
+- **Doorbell feed display:** Displaying a WebRTC feed when a person/doorbell press is detected. See [Components](src/CodeCasa.Dashboard/Components/Dashboard/DoorbellStream.razor).
 - **Blazor Dashboard:** The razor page/components can be found here: [Components](src/CodeCasa.Dashboard/Components).
 - **Panel state:** Stored in an input select value and managed in [LivingRoomPanelNavigation.cs](src/CodeCasa.Automations/Apps/Dashboard/LivingRoomPanelNavigation.cs).
 - **Google timers & alarms:** Implemented via the HACS integration [ha-google-home](https://github.com/leikoilja/ha-google-home).

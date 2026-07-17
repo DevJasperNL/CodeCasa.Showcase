@@ -78,7 +78,7 @@
     private async Task HandleIframeLoadAsync()
     {
         // Note: this extra delay prevents the "pause" icon from being visible on my ns-panel pro. This is not required for all clients.
-        await Task.Delay(500);
+        await Task.Delay(1000);
 
         await InvokeAsync(async () =>
         {
