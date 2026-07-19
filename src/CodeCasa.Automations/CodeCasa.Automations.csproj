@@ -31,6 +31,7 @@
     <PackageReference Include="CodeCasa.Notifications.Phone.NetDaemon" Version="1.22.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.9" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
+    <PackageReference Include="MQTTnet" Version="5.0.9" />
     <PackageReference Include="NetDaemon.Extensions.Scheduling" Version="26.21.0" />
     <PackageReference Include="NetDaemon.Runtime" Version="26.21.0" />
     <PackageReference Include="Occurify.Astro" Version="0.10.0" />
