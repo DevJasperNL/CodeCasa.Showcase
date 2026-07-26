@@ -7,6 +7,7 @@
     <ProjectReference Include="..\..\..\CodeCasa\src\CodeCasa.Abstractions\CodeCasa.Abstractions.csproj" />
     <ProjectReference Include="..\..\..\CodeCasa\src\CodeCasa.AutomationPipelines\CodeCasa.AutomationPipelines.csproj" />
     <ProjectReference Include="..\..\..\CodeCasa\src\CodeCasa.AutomationPipelines.Lights\CodeCasa.AutomationPipelines.Lights.csproj" />
+	<ProjectReference Include="..\..\..\CodeCasa\src\CodeCasa.AutomationPipelines.Lights.Mqtt\CodeCasa.AutomationPipelines.Lights.Mqtt.csproj" />
     <ProjectReference Include="..\..\..\CodeCasa\src\CodeCasa.AutomationPipelines.Lights.NetDaemon\CodeCasa.AutomationPipelines.Lights.NetDaemon.csproj" />
     <ProjectReference Include="..\..\..\CodeCasa\src\CodeCasa.Lights\CodeCasa.Lights.csproj" />
 	<ProjectReference Include="..\..\..\CodeCasa\src\CodeCasa.Lights.Timelines\CodeCasa.Lights.Timelines.csproj" />
@@ -23,6 +24,7 @@
     <PackageReference Remove="CodeCasa.Abstractions" />
     <PackageReference Remove="CodeCasa.AutomationPipelines" />
     <PackageReference Remove="CodeCasa.AutomationPipelines.Lights" />
+	<PackageReference Remove="CodeCasa.AutomationPipelines.Lights.Mqtt" />
     <PackageReference Remove="CodeCasa.AutomationPipelines.Lights.NetDaemon" />
     <PackageReference Remove="CodeCasa.Lights" />
 	<PackageReference Remove="CodeCasa.Lights.Timelines" />
