@@ -51,7 +51,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeCasa.NetDaemon.Sensors.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeCasa.Lights.Timelines", "..\CodeCasa\src\CodeCasa.Lights.Timelines\CodeCasa.Lights.Timelines.csproj", "{F0A38131-55E6-85EB-84A7-43B29068C457}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeCasa.Mqtt", "src\CodeCasa.Mqtt\CodeCasa.Mqtt.csproj", "{E67C8206-7782-4548-9DB8-CB0DA6B330AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeCasa.AutomationPipelines.Lights.Mqtt", "..\CodeCasa\src\CodeCasa.AutomationPipelines.Lights.Mqtt\CodeCasa.AutomationPipelines.Lights.Mqtt.csproj", "{D93E2EF7-E532-CCD4-B2B7-CCA3BB19B3EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -147,10 +147,10 @@ Global
 		{F0A38131-55E6-85EB-84A7-43B29068C457}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0A38131-55E6-85EB-84A7-43B29068C457}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0A38131-55E6-85EB-84A7-43B29068C457}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E67C8206-7782-4548-9DB8-CB0DA6B330AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E67C8206-7782-4548-9DB8-CB0DA6B330AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E67C8206-7782-4548-9DB8-CB0DA6B330AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E67C8206-7782-4548-9DB8-CB0DA6B330AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D93E2EF7-E532-CCD4-B2B7-CCA3BB19B3EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D93E2EF7-E532-CCD4-B2B7-CCA3BB19B3EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D93E2EF7-E532-CCD4-B2B7-CCA3BB19B3EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D93E2EF7-E532-CCD4-B2B7-CCA3BB19B3EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -174,6 +174,7 @@ Global
 		{5E27A3C9-DEC8-EE85-3AD0-2AC35879186F} = {69FE0431-17B3-4A14-ABAE-BA106D3BF6DF}
 		{C52ABD0A-8097-D982-629D-F57CCD5A4AA8} = {69FE0431-17B3-4A14-ABAE-BA106D3BF6DF}
 		{F0A38131-55E6-85EB-84A7-43B29068C457} = {69FE0431-17B3-4A14-ABAE-BA106D3BF6DF}
+		{D93E2EF7-E532-CCD4-B2B7-CCA3BB19B3EF} = {69FE0431-17B3-4A14-ABAE-BA106D3BF6DF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C77A270A-D381-419D-AEA1-1592AA2B4B6E}

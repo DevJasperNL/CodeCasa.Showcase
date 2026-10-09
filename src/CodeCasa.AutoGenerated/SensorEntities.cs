@@ -21,6 +21,8 @@ public partial class SensorEntities
     ///<summary>Bathroom Motion Sensor Illuminance</summary>
     public NumericSensorEntity BathroomMotionSensorIlluminance => new(_haContext, "sensor.bathroom_motion_sensor_illuminance");
 
+    ///<summary>Hallway Motion Sensor Illuminance</summary>
+    public NumericSensorEntity HallwayMotionSensorIlluminance => new(_haContext, "sensor.hallway_motion_sensor_illuminance");
     ///<summary>Living Room Temperature</summary>
     public NumericSensorEntity LivingRoomTemperature => new(_haContext, "sensor.living_room_temperature");
     ///<summary>Meteorologisk Temperature</summary>

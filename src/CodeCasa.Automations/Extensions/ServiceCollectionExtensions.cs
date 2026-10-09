@@ -2,7 +2,7 @@
 using CodeCasa.AutomationPipelines.Extensions;
 using CodeCasa.AutomationPipelines.Lights.Extensions;
 using CodeCasa.AutomationPipelines.Lights.Mqtt.Extensions;
-using CodeCasa.Automations.Apps.Lights.BackyardLights.Observables;
+using CodeCasa.Automations.Apps.Lights.Backyard.Observables;
 using CodeCasa.CustomEntities.Automation.Extensions;
 using CodeCasa.Lights.NetDaemon.Scenes.Extensions;
 using CodeCasa.Notifications.InputSelect.NetDaemon.Extensions;
@@ -27,7 +27,6 @@ public static class ServiceCollectionExtensions
             .AddLightPipelines()
             .AddInputSelectNotifications(configuration)
             
-            .AddTransient<BackyardLightsRoutineFactory>()
             .AddTransient<BackyardLightsEnergySaving>()
 
             .AddCodeCasaMqtt(configuration);

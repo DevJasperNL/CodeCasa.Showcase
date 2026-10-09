@@ -12,7 +12,7 @@ This repository explores creative and powerful ways to use a rich programming la
     - [People](#people)
     - [Phone Notifications](#phone-notifications)
     - [Input Select Notifications](#input-select-notifications)
-    - [Automation Pipelines](#automation-pipelines)
+    - [Light Pipelines](#light-pipelines)
 - [Projects Overview](#🔧-projects-overview)
 - [Local Debugging with CodeCasa Projects](#local-debugging-with-codecasa-projects)
     - [CodeCasa.Showcase.withLocalCodeCasa.sln](#codecasashowcasewithlocalcodecasasln)
@@ -59,7 +59,7 @@ internal class OfficeLightsNotifications
         var notificationId = $"{nameof(OfficeLightsNotifications)}_Notification"; // Note: Using an ID that is consistent between runs also ensures that old notifications are removed/replaced on phones when the app is reloaded.
 
         var officeLights = lightEntities.OfficeLights.ToOnOffObservable();
-        var jasperHome = jasper.CreateHomeObservable();
+        var jasperHome = jasper.HomeWithCurrent();
 
         // Only notify Jasper if he is at home and the lights are on.
         jasperHome.And(officeLights).SubscribeOnOff(
@@ -108,27 +108,126 @@ For detailed usage and setup instructions, see the [`CodeCasa.NetDaemon.Notifica
 - The `NetDaemonApp` demo code: [DashboardDemoNotifications.cs](src/CodeCasa.Automations/Apps/Notifications/DashboardDemoNotifications.cs)
 - The Blazor component: [Notifications.razor](src/CodeCasa.Dashboard/Components/Dashboard/Notifications.razor)
 
-### Automation Pipelines
+### Light Pipelines
 
-This automation uses the [`AutomationPipelines`](https://github.com/DevJasperNL/CodeCasa.Libraries) library to handle complex logic in a modular, layered way.
+The lights in this project are driven by the [`CodeCasa.AutomationPipelines.Lights`](https://github.com/DevJasperNL/CodeCasa) libraries. Every light gets a **pipeline**: an ordered list of nodes, one per concern (motion, a switch, a notification). A node either sets its own output or passes through the output of the node before it. Later nodes win, so the order of the list is the priority, and the light is only ever driven from the end of the pipeline. When an override ends, nothing needs to be restored: the layers below never stopped tracking their inputs.
 
-Rather than implementing behavior directly in a single class, logic is split into small, independent pipeline nodes. Each node can contribute to or override the final outcome based on its own conditions. This makes the automation easier to reason about, test, and extend.
+Setup is three lines in [ServiceCollectionExtensions.cs](src/CodeCasa.Automations/Extensions/ServiceCollectionExtensions.cs): `AddLightPipelines()`, `AddLightScenes()` for Home Assistant scenes and `AddLightNotifications()` for light notifications.
 
-Below is the setup used in the `BackyardStringLightsPipeline` app:
+The rooms below are copied from my own house. Switches and motion sensors are small wrappers around Zigbee2MQTT actions and NetDaemon entities, see [Switches](src/CodeCasa.CustomEntities.Core/Switches) and [Sensors](src/CodeCasa.CustomEntities.Automation/Sensors).
+
+#### Hallway: motion, day and night, and a timed override
 
 ```cs
-backyardPorchStringLightsPipeline
-    .SetDefault(false)
-    .RegisterNode(new LightStringRoutineNode<bool>(scheduler, true, TimeSpan.Zero))
-    .RegisterNode<BackyardStringLightsEnergySavingNode>()
-    .SetOutputHandler(b => UpdateLightState(lightEntities.BackyardPorchStringLights, b));
+var night = PeriodTimeline.Between(AstroInstants.LocalSunsets, AstroInstants.LocalSunrises).ToBooleanObservable(scheduler);
+
+lightPipelineFactory.SetupLightPipeline(lightEntities.HallwayLight, pipeline => pipeline
+    .EnableLogging("Hallway")
+    .SwitchWhen(hallwayMotionSensor, night, LightParameters.NightLight, LightParameters.Bright)
+    .AddInteractionNode(node => node
+        .AddToggle(hallwayWallSwitch, sp => sp.CreateAutoPassThroughLightNode(LightParameters.Bright, TimeSpan.FromMinutes(5)))));
 ```
 
-In this example:
-- The pipeline starts with a default state of false (lights off).
-- The first node (LightStringRoutineNode) schedules the lights to turn on during morning and evening hours.
-- The second node (`BackyardStringLightsEnergySavingNode`) can turn them off again if all curtains are closed.
-- Finally, `SetOutputHandler` applies the resulting output to the actual light entity.
+- `hallwayMotionSensor` combines the occupancy and illuminance sensors and stays `true` for a minute after the last movement. `SwitchWhen` gives a night light between sunset and sunrise and bright light during the day.
+- The wall switch sits in a later node, so it wins: five minutes of bright light, after which the node passes through and motion is in charge again. Pressing the switch while the light is on turns it off until motion changes.
+- `AddInteractionNode` also makes a manual off, from the Home Assistant app for example, stick until an earlier node changes.
+- `EnableLogging` logs every hop between nodes, so you can read which layer produced the final state.
+
+- The `NetDaemonApp`: [HallwayLightsApp.cs](src/CodeCasa.Automations/Apps/Lights/Hallway/HallwayLightsApp.cs)
+- The motion sensor: [HallwayMotionSensor.cs](src/CodeCasa.CustomEntities.Automation/Sensors/HallwayMotionSensor.cs), the switch: [HallwayWallSwitch.cs](src/CodeCasa.CustomEntities.Automation/Switches/HallwayWallSwitch.cs)
+
+#### Office: wall switch, Hue dimmer switch and a Zigbee group
+
+```cs
+lightPipelineFactory.SetupLightPipeline(lightEntities.OfficeLights, pipeline => pipeline
+    .UseLightGroup(lightEntities.OfficeLightsZ2m)
+    .AddInteractionNode(node => node
+        .AddToggle(officeWallSwitch, LightParameters.Bright)
+        .AddToggle(officeDimmerSwitch.OnOffPressed, LightParameters.Bright)
+        .AddCycle(officeDimmerSwitch.ScenePressed, LightParameters.Bright, LightParameters.Concentrate, LightParameters.Relax)
+        .AddReactiveDimmer(officeDimmerSwitch)
+        .TurnOffWhenLastPersonToAsleepOrAway()));
+```
+
+- `AddToggle` toggles between off and bright, `AddCycle` walks through scenes based on the **actual** state of the lights, and `AddReactiveDimmer` implements hold to dim.
+- `UseLightGroup` sends one command to the Zigbee group when all bulbs receive the same transition, so the room changes at once.
+- `TurnOffWhenLastPersonToAsleepOrAway` is my own extension method, built on the same `AddNodeSource` primitive as the library's methods.
+
+- The `NetDaemonApp`: [OfficeLightsApp.cs](src/CodeCasa.Automations/Apps/Lights/Office/OfficeLightsApp.cs)
+- The dimmer switch wrapper: [HueDimmerSwitch.cs](src/CodeCasa.CustomEntities.Core/Switches/HueDimmerSwitch.cs), the custom extension: [LightTransitionReactiveNodeConfiguratorExtensions.cs](src/CodeCasa.CustomEntities.Automation/Extensions/LightTransitionReactiveNodeConfiguratorExtensions.cs)
+
+#### Living room: Home Assistant scenes and notifications
+
+```cs
+lightPipelineFactory.SetupLightPipeline(lightEntities.LivingRoomLights, pipeline => pipeline
+    .UseLightGroup(lightEntities.LivingRoomLightsZ2m)
+    .AddInteractionNode(node => node
+        .AddToggle(livingRoomWallSwitch,
+            sceneEntities.LivingRoomAmbiance,
+            sceneEntities.LivingRoomRelax,
+            sceneEntities.LivingRoomBright)
+        .TurnOffWhenLastPersonToAsleepOrAway())
+    .AddNotifications());
+```
+
+Scenes made in the Home Assistant scene editor are accepted wherever light parameters are. `AddNotifications` lets any other app take the lights over for a while, without knowing which pipelines exist. The doorbell does exactly that, with a custom blinking node:
+
+```cs
+frontDoorDoorbell.BellPressed
+    .PersistTrueFor(TimeSpan.FromSeconds(30), scheduler)
+    .SubscribeTrueFalse(
+        () => lightNotifications.Notify(notificationId, sp => new BlinkNode(scheduler, Color.Blue, Color.White), priority: 10),
+        () => lightNotifications.RemoveNotification(notificationId));
+```
+
+- The `NetDaemonApp`: [LivingRoomLightsApp.cs](src/CodeCasa.Automations/Apps/Lights/LivingRoom/LivingRoomLightsApp.cs)
+- The doorbell notification: [DoorbellLightNotifications.cs](src/CodeCasa.Automations/Apps/Notifications/DoorbellLightNotifications.cs), the node: [BlinkNode.cs](src/CodeCasa.Automations/Nodes/BlinkNode.cs)
+
+#### Attic: natural light
+
+```cs
+Action<ITimelineConfigurator> naturalLight = tl => tl
+    .Add(AstroInstants.LocalSunrises, LightParameters.Bright)
+    .Add(AstroInstants.LocalSunsets.OffsetHours(-2), LightParameters.Bright)
+    .Add(AstroInstants.LocalSunsets, LightParameters.Dimmed)
+    .Add(TimeZoneInstants.DailyAt(5), LightParameters.Dimmed);
+
+lightPipelineFactory.SetupLightPipeline(lightEntities.AtticLights, pipeline => pipeline
+    .UseLightGroup(lightEntities.AtticLightsZ2m)
+    .AddInteractionNode(node => node
+        .AddToggle(atticWallSwitch, naturalLight)
+        .AddToggle(atticDimmerSwitch.OnOffPressed, naturalLight)
+        .AddCycle(atticDimmerSwitch.ScenePressed, slightlyBright, LightParameters.Relax)
+        .AddReactiveDimmer(atticDimmerSwitch)
+        .TurnOffWhenLastPersonToAsleepOrAway())
+    .AddNotifications());
+```
+
+A timeline, built with [Occurify](https://github.com/DevJasperNL/Occurify), maps moments of the day to light parameters and the pipeline interpolates between them continuously. Here the switches toggle the timeline instead of a fixed scene.
+
+- The `NetDaemonApp`: [AtticLightsApp.cs](src/CodeCasa.Automations/Apps/Lights/Attic/AtticLightsApp.cs)
+
+#### Backyard: one pipeline, six lights
+
+```cs
+lightPipelineFactory.SetupLightPipeline(lightEntities.BackyardLights, pipeline => pipeline
+    .ForLight(lightEntities.BackyardPorchStringLights, light => light
+        .When(new BackyardLightsRoutine(scheduler, TimeSpan.Zero), LightParameters.On()))
+    .ForLight(lightEntities.BackyardPergolaStringLights, light => light
+        .When(new BackyardLightsRoutine(scheduler, TimeSpan.FromSeconds(1)), LightParameters.On()))
+    .ForLight(lightEntities.BackyardFenceStringLights, light => light
+        .When(new BackyardLightsRoutine(scheduler, TimeSpan.FromSeconds(2)), LightParameters.On()))
+    .ForLights([lightEntities.BackyardGarageLight, lightEntities.BackyardEntranceLight, lightEntities.BackyardDoorLight], lights => lights
+        .When(new BackyardLightsRoutine(scheduler, TimeSpan.FromSeconds(10)), LightParameters.Relax.AsTransitionInSeconds(4)))
+    .TurnOffWhen<BackyardLightsEnergySaving>());
+```
+
+The pipeline is set up for the Home Assistant group, and `ForLight`/`ForLights` scope nodes to some of its members: the string lights turn on one second apart, the wall lights follow ten seconds later. The energy saving node applies to all of them.
+
+- The `NetDaemonApp`: [BackyardLightsApp.cs](src/CodeCasa.Automations/Apps/Lights/Backyard/BackyardLightsApp.cs)
+- The observables: [BackyardLightsRoutine.cs](src/CodeCasa.Automations/Apps/Lights/Backyard/Observables/BackyardLightsRoutine.cs), [BackyardLightsEnergySaving.cs](src/CodeCasa.Automations/Apps/Lights/Backyard/Observables/BackyardLightsEnergySaving.cs)
+
+For the full API see the [CodeCasa repository](https://github.com/DevJasperNL/CodeCasa) and the NuGet packages [CodeCasa.AutomationPipelines.Lights](https://www.nuget.org/packages/CodeCasa.AutomationPipelines.Lights), [CodeCasa.AutomationPipelines.Lights.NetDaemon](https://www.nuget.org/packages/CodeCasa.AutomationPipelines.Lights.NetDaemon) and [CodeCasa.Notifications.Lights](https://www.nuget.org/packages/CodeCasa.Notifications.Lights).
 
 ## 🔧 Projects Overview
 
