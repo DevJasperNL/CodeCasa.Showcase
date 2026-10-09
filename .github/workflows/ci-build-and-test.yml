@@ -16,10 +16,10 @@ jobs:
       - name: 🗂️ Checkout the repository
         uses: actions/checkout@main
 
-      - name: ⬇️ Install .NET 9
+      - name: ⬇️ Install .NET 10
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: '10.0.x'
 
       - name: 🛠️ Build code
         run: dotnet build CodeCasa.Showcase.sln --configuration Release -p:TreatWarningsAsErrors=true

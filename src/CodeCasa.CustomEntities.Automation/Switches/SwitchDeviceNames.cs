@@ -6,6 +6,7 @@
         public const string AtticHallwayWallSwitch = "Attic Hallway Wall Switch";
         public const string BathroomWallSwitch = "Bathroom Wall Switch";
         public const string BedroomWallSwitch = "Bedroom Wall Switch";
+        public const string HallwayWallSwitch = "Hallway Wall Switch";
         public const string OfficeWallSwitch = "Office Wall Switch";
         public const string LivingRoomWallSwitch = "Living Room Wall Switch";
 

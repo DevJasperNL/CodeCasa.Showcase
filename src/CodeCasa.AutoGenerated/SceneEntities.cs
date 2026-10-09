@@ -17,6 +17,10 @@ public partial class SceneEntities
 
     ///<summary>Living Room Ambiance</summary>
     public SceneEntity LivingRoomAmbiance => new(_haContext, "scene.living_room_ambiance");
+    ///<summary>Living Room Bright</summary>
+    public SceneEntity LivingRoomBright => new(_haContext, "scene.living_room_bright");
+    ///<summary>Living Room Relax</summary>
+    public SceneEntity LivingRoomRelax => new(_haContext, "scene.living_room_relax");
 }
 
 public partial record SceneEntity : Entity<SceneEntity, EntityState<SceneAttributes>, SceneAttributes>, ISceneEntityCore

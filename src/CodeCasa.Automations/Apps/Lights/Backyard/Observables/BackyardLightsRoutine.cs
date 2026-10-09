@@ -6,7 +6,7 @@ using Occurify.Reactive.Extensions;
 using Occurify.TimeZones;
 using Reactive.Boolean;
 
-namespace CodeCasa.Automations.Apps.Lights.BackyardLights.Observables;
+namespace CodeCasa.Automations.Apps.Lights.Backyard.Observables;
 
 public class BackyardLightsRoutine : IObservable<bool>
 {

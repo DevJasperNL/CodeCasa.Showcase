@@ -18,8 +18,18 @@ public partial class LightEntities
     public LightEntity AtticLightsZ2m => new(_haContext, "light.attic_lights_z2m");
     ///<summary>Attic Spot Middle Door</summary>
     public LightEntity AtticSpotMiddleDoor => new(_haContext, "light.attic_spot_middle_door");
+    ///<summary>Hallway Light</summary>
+    public LightEntity HallwayLight => new(_haContext, "light.hallway_light");
+    ///<summary>Living Room Lights</summary>
+    public LightEntity LivingRoomLights => new(_haContext, "light.living_room_lights");
+    ///<summary>living_room_lights_z2m</summary>
+    public LightEntity LivingRoomLightsZ2m => new(_haContext, "light.living_room_lights_z2m");
     ///<summary>Office Lights</summary>
     public LightEntity OfficeLights => new(_haContext, "light.office_lights");
+    ///<summary>office_lights_z2m</summary>
+    public LightEntity OfficeLightsZ2m => new(_haContext, "light.office_lights_z2m");
+    ///<summary>Backyard Lights</summary>
+    public LightEntity BackyardLights => new(_haContext, "light.backyard_lights");
     ///<summary>Backyard Door Light</summary>
     public LightEntity BackyardDoorLight => new(_haContext, "light.backyard_door_light");
     ///<summary>Backyard Entrance Light</summary>
@@ -28,7 +38,7 @@ public partial class LightEntities
     public LightEntity BackyardFenceStringLights => new(_haContext, "light.backyard_fence_string_lights");
     ///<summary>Backyard Garage Light</summary>
     public LightEntity BackyardGarageLight => new(_haContext, "light.backyard_garage_light");
-    ///<summary>Backyard Lights</summary>
+    ///<summary>Backyard Pergola String Lights</summary>
     public LightEntity BackyardPergolaStringLights => new(_haContext, "light.backyard_pergola_string_lights");
     ///<summary>Backyard Porch Kerosene Light</summary>
     public LightEntity BackyardPorchStringLights => new(_haContext, "light.backyard_porch_string_lights");
